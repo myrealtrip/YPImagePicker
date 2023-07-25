@@ -9,7 +9,6 @@
 import UIKit
 import Photos
 import PryntTrimmerView
-import Stevia
 
 public final class YPVideoFiltersVC: UIViewController, IsMediaFilterVC {
 

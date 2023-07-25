@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Stevia
 import Photos
 
 internal final class YPLibraryView: UIView {
@@ -200,5 +199,11 @@ internal final class YPLibraryView: UIView {
         |maxNumberWarningView|.bottom(0)
         maxNumberWarningView.Top == safeAreaLayoutGuide.Bottom - 40
         maxNumberWarningLabel.centerHorizontally().top(11)
+    }
+}
+
+private extension UIView {
+    var topConstraint: NSLayoutConstraint? {
+        return YPHelper.constraintForView(self, attribute: .top)
     }
 }

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Stevia
 
 final class YPPagerMenu: UIView {
     

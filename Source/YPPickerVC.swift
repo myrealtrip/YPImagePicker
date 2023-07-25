@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Stevia
 import Photos
 
 protocol YPPickerVCDelegate: AnyObject {
@@ -383,5 +382,11 @@ extension YPPickerVC: YPLibraryViewDelegate {
     
     public func libraryViewShouldAddToSelection(indexPath: IndexPath, numSelections: Int) -> Bool {
         return pickerVCDelegate?.shouldAddToSelection(indexPath: indexPath, numSelections: numSelections) ?? true
+    }
+}
+
+private extension UIView {
+    var bottomConstraint: NSLayoutConstraint? {
+        return YPHelper.constraintForView(self, attribute: .bottom)
     }
 }

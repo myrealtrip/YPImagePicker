@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Stevia
 
 final class YPBottomPagerView: UIView {
     
@@ -47,5 +46,11 @@ final class YPBottomPagerView: UIView {
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.scrollsToTop = false
         scrollView.bounces = false
+    }
+}
+
+private extension UIView {
+    var heightConstraint: NSLayoutConstraint? {
+        return YPHelper.constraintForView(self, attribute: .height)
     }
 }

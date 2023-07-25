@@ -66,4 +66,30 @@ struct YPHelper {
         let minutes = (interval / 60) % 60
         return String(format: "%02d:%02d", minutes, seconds)
     }
+    
+    static func constraintForView(_ v: UIView, attribute: NSLayoutConstraint.Attribute) -> NSLayoutConstraint? {
+        
+        func lookForConstraint(in view: UIView?) -> NSLayoutConstraint? {
+            guard let constraints = view?.constraints else {
+                return nil
+            }
+            for c in constraints {
+                if let fi = c.firstItem as? NSObject, fi == v && c.firstAttribute == attribute {
+                    return c
+                } else if let si = c.secondItem as? NSObject, si == v && c.secondAttribute == attribute {
+                    return c
+                }
+            }
+            return nil
+        }
+        
+        // Width and height constraints added via widthAnchor/heightAnchors are
+        // added on the view itself.
+        if (attribute == .width || attribute == .height) {
+            return lookForConstraint(in: v.superview) ?? lookForConstraint(in: v)
+        }
+        
+        // Look for constraint on superview.
+        return lookForConstraint(in: v.superview)
+    }
 }
