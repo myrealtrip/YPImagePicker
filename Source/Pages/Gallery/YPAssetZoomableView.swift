@@ -24,6 +24,8 @@ final class YPAssetZoomableView: UIScrollView {
     public var videoView = YPVideoView()
     public var squaredZoomScale: CGFloat = 1
     public var minWidthForItem: CGFloat? = YPConfig.library.minWidthForItem
+    public var landscapeAspectRatio: CGFloat? = YPConfig.library.landscapeAspectRatio
+    public var portraitAspectRatio: CGFloat? = YPConfig.library.portraitAspectRatio
     
     fileprivate var currentAsset: PHAsset?
     
@@ -194,12 +196,12 @@ fileprivate extension YPAssetZoomableView {
         var zoomScale: CGFloat = 1
 
         if w > h { // Landscape
-            aspectRatio = h / w
+            aspectRatio = landscapeAspectRatio ?? (h / w)
             view.frame.size.width = screenWidth
             view.frame.size.height = screenWidth * aspectRatio
         } else if h > w { // Portrait
-            aspectRatio = w / h
-            view.frame.size.width = screenWidth * aspectRatio
+            aspectRatio = portraitAspectRatio ?? (h / w)
+            view.frame.size.width = screenWidth * (1 / aspectRatio)
             view.frame.size.height = screenWidth
             
             if let minWidth = minWidthForItem {

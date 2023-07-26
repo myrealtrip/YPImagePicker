@@ -29,6 +29,24 @@
 		60EA0CEC2A6F91AA00D0FCF8 /* Stevia+Alignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CDA2A6F91AA00D0FCF8 /* Stevia+Alignment.swift */; };
 		60EA0CED2A6F91AA00D0FCF8 /* Stevia+LayoutAnchors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CDB2A6F91AA00D0FCF8 /* Stevia+LayoutAnchors.swift */; };
 		60EA0CEE2A6F91AA00D0FCF8 /* Stevia+Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CDC2A6F91AA00D0FCF8 /* Stevia+Content.swift */; };
+		60EA0CF32A6F9A5700D0FCF8 /* Stevia+Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CDC2A6F91AA00D0FCF8 /* Stevia+Content.swift */; };
+		60EA0CF42A6F9A5700D0FCF8 /* Stevia+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CD52A6F91AA00D0FCF8 /* Stevia+Constraints.swift */; };
+		60EA0CF52A6F9A5700D0FCF8 /* Stevia+Stacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CD72A6F91AA00D0FCF8 /* Stevia+Stacks.swift */; };
+		60EA0CF62A6F9A5700D0FCF8 /* Stevia+Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CD02A6F91AA00D0FCF8 /* Stevia+Position.swift */; };
+		60EA0CF72A6F9A5700D0FCF8 /* Stevia+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CCB2A6F91AA00D0FCF8 /* Stevia+Style.swift */; };
+		60EA0CF82A6F9A5700D0FCF8 /* Stevia+Hierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CD42A6F91AA00D0FCF8 /* Stevia+Hierarchy.swift */; };
+		60EA0CF92A6F9A5700D0FCF8 /* Stevia+Equation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CD92A6F91AA00D0FCF8 /* Stevia+Equation.swift */; };
+		60EA0CFA2A6F9A5700D0FCF8 /* Stevia+Alignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CDA2A6F91AA00D0FCF8 /* Stevia+Alignment.swift */; };
+		60EA0CFB2A6F9A5700D0FCF8 /* Stevia+LayoutAnchors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CDB2A6F91AA00D0FCF8 /* Stevia+LayoutAnchors.swift */; };
+		60EA0CFC2A6F9A5700D0FCF8 /* Stevia+DoubleDash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CCC2A6F91AA00D0FCF8 /* Stevia+DoubleDash.swift */; };
+		60EA0CFD2A6F9A5700D0FCF8 /* Stevia+Fill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CCF2A6F91AA00D0FCF8 /* Stevia+Fill.swift */; };
+		60EA0CFE2A6F9A5700D0FCF8 /* Stevia+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CCE2A6F91AA00D0FCF8 /* Stevia+Center.swift */; };
+		60EA0CFF2A6F9A5700D0FCF8 /* Stevia+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CD62A6F91AA00D0FCF8 /* Stevia+Size.swift */; };
+		60EA0D002A6F9A5700D0FCF8 /* Stevia+FlexibleMargin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CD22A6F91AA00D0FCF8 /* Stevia+FlexibleMargin.swift */; };
+		60EA0D012A6F9A5700D0FCF8 /* Stevia+Baselines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CD32A6F91AA00D0FCF8 /* Stevia+Baselines.swift */; };
+		60EA0D022A6F9A5700D0FCF8 /* Stevia+Percentage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CD82A6F91AA00D0FCF8 /* Stevia+Percentage.swift */; };
+		60EA0D032A6F9A5700D0FCF8 /* Stevia+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CCD2A6F91AA00D0FCF8 /* Stevia+Operators.swift */; };
+		60EA0D042A6F9A5700D0FCF8 /* Stevia+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EA0CD12A6F91AA00D0FCF8 /* Stevia+Notifications.swift */; };
 		8458057421819B95004F241C /* YPImagePickerLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 99C6D6991F1FB5C100711DB2 /* YPImagePickerLocalizable.strings */; };
 		99019E4C2018CCD6007325C2 /* YPBottomPagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99019E4B2018CCD6007325C2 /* YPBottomPagerView.swift */; };
 		99019E4E2018CD31007325C2 /* YPPagerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99019E4D2018CD31007325C2 /* YPPagerMenu.swift */; };
@@ -788,7 +806,7 @@
 					};
 					EBA37B4E26F749C6005DAAD4 = {
 						CreatedOnToolsVersion = 12.5.1;
-						DevelopmentTeam = B3U3XRF8D7;
+						DevelopmentTeam = 6G2U9CRV7H;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1068,13 +1086,18 @@
 				EBA37B9B26F74CBA005DAAD4 /* UINavigationBar+Extensions.swift in Sources */,
 				EBA37B7D26F74CBA005DAAD4 /* URL+Extensions.swift in Sources */,
 				EBA37B6926F74CBA005DAAD4 /* UIBarButtonItem+Extensions.swift in Sources */,
+				60EA0CF52A6F9A5700D0FCF8 /* Stevia+Stacks.swift in Sources */,
 				EBA37B6326F74A7F005DAAD4 /* ExampleViewController.swift in Sources */,
 				EBA37B7A26F74CBA005DAAD4 /* PHCachingImageManager+Extensions.swift in Sources */,
+				60EA0CFA2A6F9A5700D0FCF8 /* Stevia+Alignment.swift in Sources */,
+				60EA0CF42A6F9A5700D0FCF8 /* Stevia+Constraints.swift in Sources */,
 				EBA37BA926F74CBA005DAAD4 /* YPLibraryViewDelegate.swift in Sources */,
 				EBA37B8D26F74CBA005DAAD4 /* YPVideoCaptureVC.swift in Sources */,
 				EBA37BC126F74CE0005DAAD4 /* YPFilter.swift in Sources */,
 				EBA37BAE26F74CBA005DAAD4 /* YPAlbumVC.swift in Sources */,
 				EBA37BA426F74CBA005DAAD4 /* UICollectionView+Extensions.swift in Sources */,
+				60EA0D012A6F9A5700D0FCF8 /* Stevia+Baselines.swift in Sources */,
+				60EA0CF32A6F9A5700D0FCF8 /* Stevia+Content.swift in Sources */,
 				EBA37BA726F74CBA005DAAD4 /* YPMenuItem.swift in Sources */,
 				EBA37B6626F74CBA005DAAD4 /* YPLoadingView.swift in Sources */,
 				EBA37BAB26F74CBA005DAAD4 /* YPCropView.swift in Sources */,
@@ -1084,6 +1107,7 @@
 				EBA37BC926F757FF005DAAD4 /* Bundle+Extensions.swift in Sources */,
 				EBA37BA226F74CBA005DAAD4 /* YPDeviceOrientationHelper.swift in Sources */,
 				EBA37B9326F74CBA005DAAD4 /* YPBottomPagerView.swift in Sources */,
+				60EA0CF72A6F9A5700D0FCF8 /* Stevia+Style.swift in Sources */,
 				EBA37B7226F74CBA005DAAD4 /* YPPickerScreen.swift in Sources */,
 				EBA37B7F26F74CBA005DAAD4 /* YPPermissionCheckable.swift in Sources */,
 				EBA37B9826F74CBA005DAAD4 /* YPVideoProcessor.swift in Sources */,
@@ -1095,6 +1119,7 @@
 				EBA37B7526F74CBA005DAAD4 /* YPLibraryVC+PanGesture.swift in Sources */,
 				EBA37B8426F74CBA005DAAD4 /* YPColors.swift in Sources */,
 				EBA37B9726F74CBA005DAAD4 /* AVPlayer+Extensions.swift in Sources */,
+				60EA0D042A6F9A5700D0FCF8 /* Stevia+Notifications.swift in Sources */,
 				EBA37B6426F74C9A005DAAD4 /* YPImagePicker.swift in Sources */,
 				EBA37B8A26F74CBA005DAAD4 /* YPLog.swift in Sources */,
 				EBA37B9A26F74CBA005DAAD4 /* YPLibrarySelection.swift in Sources */,
@@ -1109,29 +1134,40 @@
 				EBA37B8626F74CBA005DAAD4 /* YPWordings.swift in Sources */,
 				EBA37BAC26F74CBA005DAAD4 /* YPHelper.swift in Sources */,
 				EBA37B8C26F74CBA005DAAD4 /* YPAlbumCell.swift in Sources */,
+				60EA0CFB2A6F9A5700D0FCF8 /* Stevia+LayoutAnchors.swift in Sources */,
 				EBA37BA626F74CBA005DAAD4 /* IndexSet+Extensions.swift in Sources */,
 				EBA37BB526F74CBB005DAAD4 /* YPAlbum.swift in Sources */,
 				EBA37BA026F74CBA005DAAD4 /* YPPhotoCaptureHelper.swift in Sources */,
+				60EA0D002A6F9A5700D0FCF8 /* Stevia+FlexibleMargin.swift in Sources */,
+				60EA0D022A6F9A5700D0FCF8 /* Stevia+Percentage.swift in Sources */,
+				60EA0CFD2A6F9A5700D0FCF8 /* Stevia+Fill.swift in Sources */,
 				EBA37BBF26F74CE0005DAAD4 /* YPFiltersView.swift in Sources */,
 				EBA37B8026F74CBA005DAAD4 /* NSFileManager+Extensions.swift in Sources */,
 				EBA37B7326F74CBA005DAAD4 /* YPSelectionsGalleryVC.swift in Sources */,
 				EBA37B8126F74CBA005DAAD4 /* PHFetchResult+Extensions.swift in Sources */,
 				EBA37BB026F74CBA005DAAD4 /* YPVideoCaptureHelper.swift in Sources */,
+				60EA0CF92A6F9A5700D0FCF8 /* Stevia+Equation.swift in Sources */,
 				EBA37B7126F74CBA005DAAD4 /* YPLibraryVC+CollectionView.swift in Sources */,
 				EBA37B8B26F74CBA005DAAD4 /* YPIcons.swift in Sources */,
 				EBA37BB426F74CBB005DAAD4 /* YPLibraryView.swift in Sources */,
+				60EA0CFF2A6F9A5700D0FCF8 /* Stevia+Size.swift in Sources */,
 				EBA37B8E26F74CBA005DAAD4 /* YPSelectionsGalleryCell.swift in Sources */,
 				EBA37BA326F74CBA005DAAD4 /* YPAssetViewContainer.swift in Sources */,
 				EBA37B9D26F74CBA005DAAD4 /* YPImageSize.swift in Sources */,
 				EBA37B9926F74CBA005DAAD4 /* YPFlashMode.swift in Sources */,
 				EBA37BBD26F74CE0005DAAD4 /* YPFilterCollectionViewCell.swift in Sources */,
+				60EA0D032A6F9A5700D0FCF8 /* Stevia+Operators.swift in Sources */,
 				EBA37B8326F74CBA005DAAD4 /* CIImage+Extensions.swift in Sources */,
+				60EA0CFC2A6F9A5700D0FCF8 /* Stevia+DoubleDash.swift in Sources */,
+				60EA0CF82A6F9A5700D0FCF8 /* Stevia+Hierarchy.swift in Sources */,
 				EBA37BAA26F74CBA005DAAD4 /* YPCameraVC.swift in Sources */,
 				EBA37B6526F74C9A005DAAD4 /* YPPickerVC.swift in Sources */,
 				EBA37B9026F74CBA005DAAD4 /* AVMutableComposition+Extensions.swift in Sources */,
+				60EA0CFE2A6F9A5700D0FCF8 /* Stevia+Center.swift in Sources */,
 				EBA37B6726F74CBA005DAAD4 /* YPFonts.swift in Sources */,
 				EBA37B6D26F74CBA005DAAD4 /* YPLibrary+LibraryChange.swift in Sources */,
 				EBA37B6A26F74CBA005DAAD4 /* UIColor+Extensions.swift in Sources */,
+				60EA0CF62A6F9A5700D0FCF8 /* Stevia+Position.swift in Sources */,
 				EBA37BAF26F74CBA005DAAD4 /* YPSelectionsGalleryView.swift in Sources */,
 				EBA37B7626F74CBA005DAAD4 /* YPVideoFiltersVC.swift in Sources */,
 				EBA37B6826F74CBA005DAAD4 /* LibraryMediaManager.swift in Sources */,
@@ -1395,14 +1431,14 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B3U3XRF8D7;
+				DEVELOPMENT_TEAM = 6G2U9CRV7H;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Example/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yummypets.YPIPExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.myrealtrip.YPIPExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 5.0;
@@ -1423,13 +1459,13 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B3U3XRF8D7;
+				DEVELOPMENT_TEAM = 6G2U9CRV7H;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Example/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yummypets.YPIPExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.myrealtrip.YPIPExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

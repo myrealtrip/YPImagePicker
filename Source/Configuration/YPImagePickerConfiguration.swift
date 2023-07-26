@@ -227,6 +227,10 @@ public struct YPConfigLibrary {
     
     /// Set the overlay type shown on top of the selected library item
     public var itemOverlayType: YPItemOverlayType = .grid
+    
+    /// Custom for Myrealtrip
+    public var landscapeAspectRatio: CGFloat?
+    public var portraitAspectRatio: CGFloat?
 }
 
 /// Encapsulates video specific settings.

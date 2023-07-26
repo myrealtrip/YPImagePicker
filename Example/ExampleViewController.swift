@@ -74,6 +74,50 @@ class ExampleViewController: UIViewController {
 
         var config = YPImagePickerConfiguration()
 
+        config.showsPhotoFilters = false
+        config.showsCrop = .rectangle(ratio: (16/9))
+        config.showsCropGridOverlay = true
+        config.shouldSaveNewPicturesToAlbum = true
+        config.screens = [.library]
+        config.hidesStatusBar = false
+        config.hidesBottomBar = false
+        config.maxCameraZoomFactor = 2.0
+        
+        config.library.itemOverlayType = .grid
+        config.library.maxNumberOfItems = 10
+        config.library.preselectedItems = selectedItems
+        config.library.landscapeAspectRatio = (3/4)
+        config.library.portraitAspectRatio = (5/4)
+
+        config.gallery.hidesRemoveButton = false
+        
+        config.wordings.libraryTitle = "최근 항목"
+        
+        config.colors.libraryScreenBackgroundColor = .black
+        config.colors.assetViewBackgroundColor = .black
+        config.colors.safeAreaBackgroundColor = .black
+        config.colors.seperatorViewColor = .black
+        
+        
+        let picker = YPImagePicker(configuration: config)
+        picker.imagePickerDelegate = self
+        picker.didFinishPicking { [weak picker] items, _ in
+            self.selectedItems = items
+            self.selectedImageV.image = items.singlePhoto?.image
+            picker?.dismiss(animated: true, completion: nil)
+        }
+
+        present(picker, animated: true, completion: nil)
+    }
+
+    
+    
+    /*
+    @objc
+    func showPicker() {
+
+        var config = YPImagePickerConfiguration()
+
         /* Uncomment and play around with the configuration 👨‍🔬 🚀 */
 
         /* Set this to true if you want to force the  library output to be a squared image. Defaults to false */
@@ -260,6 +304,7 @@ class ExampleViewController: UIViewController {
 
         present(picker, animated: true, completion: nil)
     }
+     */
 }
 
 // Support methods
