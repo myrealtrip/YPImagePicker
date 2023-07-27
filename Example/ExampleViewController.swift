@@ -75,8 +75,6 @@ class ExampleViewController: UIViewController {
         var config = YPImagePickerConfiguration()
 
         config.showsPhotoFilters = false
-        config.showsCrop = .rectangle(ratio: (16/9))
-        config.showsCropGridOverlay = true
         config.shouldSaveNewPicturesToAlbum = true
         config.screens = [.library]
         config.hidesStatusBar = false

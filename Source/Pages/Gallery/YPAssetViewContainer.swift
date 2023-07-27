@@ -15,6 +15,7 @@ final class YPAssetViewContainer: UIView {
     public var zoomableView: YPAssetZoomableView
     public var itemOverlay: UIView?
     public let curtain = UIView()
+    public let curtainView = YPCurtainView(ratio: (3/4))    // TODO: 세영 zoomableView.image의 frame에 맞게 ratio 변경필요.
     public let spinnerView = UIView()
     public let squareCropButton = UIButton()
     public let multipleSelectionButton: UIButton = {
@@ -65,12 +66,14 @@ final class YPAssetViewContainer: UIView {
             spinnerView.subviews(
                 spinner
             ),
-            curtain
+            curtain,
+            curtainView
         )
 
         spinner.centerInContainer()
         spinnerView.fillContainer()
         curtain.fillContainer()
+        curtainView.fillContainer()
 
         spinner.startAnimating()
         spinnerView.backgroundColor = UIColor.ypLabel.withAlphaComponent(0.3)
