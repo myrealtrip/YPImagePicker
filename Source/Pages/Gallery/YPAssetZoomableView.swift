@@ -200,9 +200,13 @@ fileprivate extension YPAssetZoomableView {
             view.frame.size.width = screenWidth
             view.frame.size.height = screenWidth * aspectRatio
         } else if h > w { // Portrait
-            aspectRatio = portraitAspectRatio ?? (h / w)
-            view.frame.size.width = screenWidth * (1 / aspectRatio)
+            aspectRatio = w / h
+            view.frame.size.width = screenWidth * aspectRatio
             view.frame.size.height = screenWidth
+            
+            if let portraitAspectRatio {
+                view.frame.size.width = screenWidth * (1 / portraitAspectRatio)
+            }
             
             if let minWidth = minWidthForItem {
                 let k = minWidth / screenWidth
@@ -212,6 +216,7 @@ fileprivate extension YPAssetZoomableView {
             view.frame.size.width = screenWidth
             view.frame.size.height = screenWidth
         }
+        
         
         // Centering image view
         view.center = center
@@ -234,8 +239,11 @@ fileprivate extension YPAssetZoomableView {
         
         if w > h { // Landscape
             squareZoomScale = (w / h)
+            if let landscapeAspectRatio {
+                squareZoomScale = 1 / landscapeAspectRatio
+            }
         } else if h > w { // Portrait
-            squareZoomScale = (h / w)
+            squareZoomScale = portraitAspectRatio ?? (h / w)
         }
         
         return squareZoomScale
