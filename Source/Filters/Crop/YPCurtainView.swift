@@ -19,19 +19,37 @@ final class YPCurtainView: UIView {
     convenience init(ratio: Float?) {
         self.init(frame: .zero)
         
-        setupLayout(ratio: ratio ?? 1)
+        setupLayout()
+        updateCropAreaSize(ratio: ratio ?? 1)
         
+        self.clipsToBounds = true
         self.isUserInteractionEnabled = false
         
-        topCurtainView.backgroundColor = .black
-        bottomCurtainView.backgroundColor = .black
-        leadingCurtainView.backgroundColor = .black
-        trailingCurtainView.backgroundColor = .black
+        topCurtainView.backgroundColor = YPConfig.colors.assetViewBackgroundColor
+        bottomCurtainView.backgroundColor = YPConfig.colors.assetViewBackgroundColor
+        leadingCurtainView.backgroundColor = YPConfig.colors.assetViewBackgroundColor
+        trailingCurtainView.backgroundColor = YPConfig.colors.assetViewBackgroundColor
+    }
+    
+    func updateCropAreaSize(ratio: Float) {
+        let screenWidth = Float(YPImagePickerConfiguration.screenWidth)
+        if ratio < 1 {
+            cropAreaView.width(CGFloat(screenWidth))
+            cropAreaView.height(CGFloat(screenWidth * ratio))
+        } else if ratio > 1 {
+            cropAreaView.width(CGFloat(screenWidth * (1 / ratio)))
+            cropAreaView.height(CGFloat(screenWidth))
+        } else {
+            cropAreaView.width(CGFloat(screenWidth)).height(CGFloat(screenWidth))
+        }
+        
+        setNeedsLayout()
+        layoutIfNeeded()
     }
 }
 
 private extension YPCurtainView {
-    func setupLayout(ratio: Float) {
+    func setupLayout() {
         subviews(
             topCurtainView,
             leadingCurtainView,
@@ -39,11 +57,6 @@ private extension YPCurtainView {
             bottomCurtainView,
             cropAreaView
         )
-        
-//        topCurtainView.height(>=0)
-//        bottomCurtainView.height(>=0)
-//        leadingCurtainView.height(>=0)
-//        trailingCurtainView.height(>=0)
         
         leadingCurtainView.Top == topCurtainView.Bottom
         leadingCurtainView.Bottom == bottomCurtainView.Top
@@ -66,16 +79,5 @@ private extension YPCurtainView {
         
         cropAreaView.centerVertically()
         cropAreaView.centerHorizontally()
-
-        let screenWidth = Float(YPImagePickerConfiguration.screenWidth)
-        if ratio < 1 {
-            cropAreaView.width(CGFloat(screenWidth))
-            cropAreaView.height(CGFloat(screenWidth * ratio))
-        } else if ratio > 1 {
-            cropAreaView.width(CGFloat(screenWidth * (1 / ratio)))
-            cropAreaView.height(CGFloat(screenWidth))
-        } else {
-            cropAreaView.width(CGFloat(screenWidth)).height(CGFloat(screenWidth))
-        }
     }
 }
