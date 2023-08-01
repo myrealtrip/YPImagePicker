@@ -16,11 +16,10 @@ final class YPCurtainView: UIView {
     let trailingCurtainView = UIView()
     let cropAreaView = UIView()
     
-    convenience init(ratio: Float?) {
+    convenience init() {
         self.init(frame: .zero)
         
         setupLayout()
-        updateCropAreaSize(ratio: ratio ?? 1)
         
         self.clipsToBounds = true
         self.isUserInteractionEnabled = false
@@ -31,20 +30,20 @@ final class YPCurtainView: UIView {
         trailingCurtainView.backgroundColor = YPConfig.colors.assetViewBackgroundColor
     }
     
-    func updateCropAreaSize(ratio: Float) {
-        let screenWidth = Float(YPImagePickerConfiguration.screenWidth)
-        if ratio < 1 {
-            cropAreaView.width(CGFloat(screenWidth))
-            cropAreaView.height(CGFloat(screenWidth * ratio))
-        } else if ratio > 1 {
-            cropAreaView.width(CGFloat(screenWidth * (1 / ratio)))
-            cropAreaView.height(CGFloat(screenWidth))
-        } else {
-            cropAreaView.width(CGFloat(screenWidth)).height(CGFloat(screenWidth))
-        }
+    func updateCropAreaSize(ratio: CGFloat?) {
+        guard let ratio else { return }
         
-        setNeedsLayout()
-        layoutIfNeeded()
+        let screenWidth = YPImagePickerConfiguration.screenWidth
+        if ratio < 1 {
+            cropAreaView.widthConstraint?.constant = screenWidth
+            cropAreaView.heightConstraint?.constant = screenWidth * ratio
+        } else if ratio > 1 {
+            cropAreaView.widthConstraint?.constant = screenWidth * (1 / ratio)
+            cropAreaView.heightConstraint?.constant = screenWidth
+        } else {
+            cropAreaView.widthConstraint?.constant = screenWidth
+            cropAreaView.heightConstraint?.constant = screenWidth
+        }
     }
 }
 
@@ -57,6 +56,11 @@ private extension YPCurtainView {
             bottomCurtainView,
             cropAreaView
         )
+        
+        topCurtainView.height(>=0)
+        bottomCurtainView.height(>=0)
+        leadingCurtainView.width(>=0)
+        trailingCurtainView.width(>=0)
         
         leadingCurtainView.Top == topCurtainView.Bottom
         leadingCurtainView.Bottom == bottomCurtainView.Top
@@ -77,7 +81,20 @@ private extension YPCurtainView {
             0
         )
         
+        let screenWidth = YPImagePickerConfiguration.screenWidth
+        cropAreaView.width(screenWidth).height(screenWidth)
+        
         cropAreaView.centerVertically()
         cropAreaView.centerHorizontally()
+    }
+}
+
+private extension UIView {
+    var widthConstraint: NSLayoutConstraint? {
+        return YPHelper.constraintForView(self, attribute: .width)
+    }
+    
+    var heightConstraint: NSLayoutConstraint? {
+        return YPHelper.constraintForView(self, attribute: .height)
     }
 }

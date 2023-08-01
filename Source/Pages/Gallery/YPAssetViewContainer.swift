@@ -15,7 +15,7 @@ final class YPAssetViewContainer: UIView {
     public var zoomableView: YPAssetZoomableView
     public var itemOverlay: UIView?
     public let curtain = UIView()
-    public let curtainView = YPCurtainView(ratio: (3/4))    // TODO: 세영 zoomableView.image의 frame에 맞게 ratio 변경필요.
+    public let curtainView = YPCurtainView()
     public let spinnerView = UIView()
     public let squareCropButton = UIButton()
     public let multipleSelectionButton: UIButton = {
@@ -107,6 +107,7 @@ final class YPAssetViewContainer: UIView {
         let z = zoomableView.zoomScale
         shouldCropToSquare = (z >= 1 && z < zoomableView.squaredZoomScale)
         zoomableView.fitImage(shouldCropToSquare, animated: true)
+        updateCurtainView(ratio: shouldCropToSquare ? 1 : zoomableView.aspectRatio)
     }
 
     /// Update only UI of square crop button.
@@ -139,6 +140,10 @@ final class YPAssetViewContainer: UIView {
         let image = on ? YPConfig.icons.multipleSelectionOnIcon : YPConfig.icons.multipleSelectionOffIcon
         multipleSelectionButton.setImage(image, for: .normal)
         updateSquareCropButtonState()
+    }
+    
+    public func updateCurtainView(ratio: CGFloat?) {
+        curtainView.updateCropAreaSize(ratio: ratio)
     }
 }
 

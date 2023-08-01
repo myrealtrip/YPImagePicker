@@ -295,6 +295,7 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
                 self.v.hideLoader()
                 self.delegate?.libraryViewFinishedLoading()
             }
+            self.v.assetViewContainer.updateCurtainView(ratio: self.v.assetZoomableView.aspectRatio)
         }
         
         let updateCropInfo = {
