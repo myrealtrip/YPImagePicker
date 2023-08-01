@@ -79,6 +79,7 @@ final class YPAssetViewContainer: UIView {
         spinnerView.backgroundColor = UIColor.ypLabel.withAlphaComponent(0.3)
         curtain.backgroundColor = UIColor.ypLabel.withAlphaComponent(0.7)
         curtain.alpha = 0
+        curtainView.isHidden = !YPConfig.library.fixCropAreaUsingAspectRatio
 
         if !onlySquare {
             // Crop Button

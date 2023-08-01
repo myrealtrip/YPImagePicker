@@ -229,8 +229,14 @@ public struct YPConfigLibrary {
     public var itemOverlayType: YPItemOverlayType = .grid
     
     /// Custom for Myrealtrip
+    // initial Ratio for landscape
     public var landscapeAspectRatio: CGFloat?
+    
+    // initial Ratio for portrait
     public var portraitAspectRatio: CGFloat?
+    
+    // show curtainView. curtainView will fit for zoomableView's aspectRatio
+    public var fixCropAreaUsingAspectRatio: Bool = false
 }
 
 /// Encapsulates video specific settings.
