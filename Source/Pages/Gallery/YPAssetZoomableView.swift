@@ -196,9 +196,18 @@ fileprivate extension YPAssetZoomableView {
         var zoomScale: CGFloat = 1
 
         if w > h { // Landscape
-            aspectRatio = landscapeAspectRatio ?? (h / w)
+            aspectRatio = (h / w)
             view.frame.size.width = screenWidth
             view.frame.size.height = screenWidth * aspectRatio
+            
+            if let landscapeAspectRatio {
+                aspectRatio = landscapeAspectRatio
+                
+                let minHeight = screenWidth * landscapeAspectRatio
+                let k = minHeight / screenWidth
+                zoomScale = (w / h) * k
+            }
+            
         } else if h > w { // Portrait
             aspectRatio = w / h
             view.frame.size.width = screenWidth * aspectRatio
@@ -241,9 +250,6 @@ fileprivate extension YPAssetZoomableView {
         
         if w > h { // Landscape
             squareZoomScale = (w / h)
-            if let landscapeAspectRatio {
-                squareZoomScale = 1 / landscapeAspectRatio
-            }
         } else if h > w { // Portrait
             squareZoomScale = (h / w)
         }

@@ -16,7 +16,7 @@ class ExampleViewController: UIViewController {
 
     lazy var selectedImageV : UIImageView = {
         let imageView = UIImageView(frame: CGRect(x: 0,
-                                                  y: 0,
+                                                  y: 50,
                                                   width: UIScreen.main.bounds.width,
                                                   height: UIScreen.main.bounds.height * 0.45))
         imageView.contentMode = .scaleAspectFit
