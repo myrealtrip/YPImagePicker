@@ -87,6 +87,7 @@ class ExampleViewController: UIViewController {
         config.library.landscapeAspectRatio = (3/4)
         config.library.portraitAspectRatio = (5/4)
         config.library.fixCropAreaUsingAspectRatio = true
+//        config.library.minWidthForItem = UIScreen.main.bounds.width * 5/4
 
         config.gallery.hidesRemoveButton = false
         

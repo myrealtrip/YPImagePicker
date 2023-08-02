@@ -206,10 +206,10 @@ fileprivate extension YPAssetZoomableView {
             
             if let portraitAspectRatio {
                 aspectRatio = portraitAspectRatio
-                view.frame.size.width = screenWidth * (1 / portraitAspectRatio)
-            }
-            
-            if let minWidth = minWidthForItem {
+                let minWidth = screenWidth * (1 / portraitAspectRatio)
+                let k = minWidth / screenWidth
+                zoomScale = (h / w) * k
+            } else if let minWidth = minWidthForItem {
                 let k = minWidth / screenWidth
                 zoomScale = (h / w) * k
             }
@@ -245,7 +245,7 @@ fileprivate extension YPAssetZoomableView {
                 squareZoomScale = 1 / landscapeAspectRatio
             }
         } else if h > w { // Portrait
-            squareZoomScale = portraitAspectRatio ?? (h / w)
+            squareZoomScale = (h / w)
         }
         
         return squareZoomScale
