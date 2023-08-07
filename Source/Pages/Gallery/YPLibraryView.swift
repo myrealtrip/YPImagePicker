@@ -145,11 +145,11 @@ internal final class YPLibraryView: UIView {
         var frameHeight = cropView.frame.height
         
         if YPConfig.library.fixCropAreaUsingAspectRatio {
-            if assetZoomableView.aspectRatio < 1 {
+            if assetZoomableView.fixedAspectRatio < 1 {
                 let margin = assetViewContainer.curtainView.topCurtainView.frame.height
                 offsetY += margin
                 frameHeight -= (margin * 2)
-            } else if assetZoomableView.aspectRatio > 1 {
+            } else if assetZoomableView.fixedAspectRatio > 1 {
                 let margin = assetViewContainer.curtainView.leadingCurtainView.frame.width
                 offsetX += margin
                 frameWidth -= (margin * 2)

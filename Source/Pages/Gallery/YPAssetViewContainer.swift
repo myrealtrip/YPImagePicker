@@ -108,7 +108,7 @@ final class YPAssetViewContainer: UIView {
         let z = zoomableView.zoomScale
         shouldCropToSquare = (z >= 1 && z < zoomableView.squaredZoomScale)
         zoomableView.fitImage(shouldCropToSquare, animated: true)
-        updateCurtainView(ratio: shouldCropToSquare ? 1 : zoomableView.aspectRatio)
+        updateCurtainView(ratio: shouldCropToSquare ? 1 : zoomableView.fixedAspectRatio)
     }
 
     /// Update only UI of square crop button.
@@ -141,9 +141,11 @@ final class YPAssetViewContainer: UIView {
         let image = on ? YPConfig.icons.multipleSelectionOnIcon : YPConfig.icons.multipleSelectionOffIcon
         multipleSelectionButton.setImage(image, for: .normal)
         updateSquareCropButtonState()
+        zoomableView.isMultipleSelectionEnabled = isMultipleSelectionEnabled
     }
     
     public func updateCurtainView(ratio: CGFloat?) {
+        guard isMultipleSelectionEnabled == false else { return }
         curtainView.updateCropAreaSize(ratio: ratio)
     }
 }

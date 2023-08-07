@@ -26,7 +26,8 @@ final class YPAssetZoomableView: UIScrollView {
     public var minWidthForItem: CGFloat? = YPConfig.library.minWidthForItem
     public var landscapeAspectRatio: CGFloat? = YPConfig.library.landscapeAspectRatio
     public var portraitAspectRatio: CGFloat? = YPConfig.library.portraitAspectRatio
-    public var aspectRatio: CGFloat = 1
+    public var fixedAspectRatio: CGFloat = 1    // 기본값 4:3
+    public var isMultipleSelectionEnabled = false
     
     fileprivate var currentAsset: PHAsset?
     
@@ -182,7 +183,56 @@ final class YPAssetZoomableView: UIScrollView {
 
 fileprivate extension YPAssetZoomableView {
     
+    func fitImageAtFixedRatio(`for` view: UIView, with image: UIImage) {
+        // Reseting the previous scale
+        self.minimumZoomScale = 1
+        self.zoomScale = 1
+        
+        let screenWidth = YPImagePickerConfiguration.screenWidth
+        
+        let w = image.size.width
+        let h = image.size.height
+        
+        if fixedAspectRatio < 1 {   // 가로
+            if w > h {
+                view.frame.size.width = screenWidth * fixedAspectRatio * (w / h)
+                view.frame.size.height = screenWidth * fixedAspectRatio
+            } else if h > w {
+                view.frame.size.width = screenWidth
+                view.frame.size.height = screenWidth * (h / w)
+            }
+        } else if fixedAspectRatio > 1 { // 세로
+            if w > h {
+                view.frame.size.width = screenWidth * (w / h)
+                view.frame.size.height = screenWidth
+            } else if h > w {
+                view.frame.size.width = screenWidth * (1 / fixedAspectRatio)
+                view.frame.size.height = screenWidth * (1 / fixedAspectRatio) * (h / w)
+            }
+        } else {
+            view.frame.size.width = screenWidth
+            view.frame.size.height = screenWidth
+        }
+
+        view.center = center
+        centerAssetView_fixed()
+    }
+    
     func setAssetFrame(`for` view: UIView, with image: UIImage) {
+
+        if YPConfig.library.fixCropAreaUsingAspectRatio {
+            if isMultipleSelectionEnabled {
+                fitImageAtFixedRatio(for: view, with: image)
+                return
+            }
+            setAssetFrame_fixed(for: view, with: image)
+            return
+        }
+        
+        setAssetFrame_original(for: view, with: image)
+    }
+    
+    func setAssetFrame_original(`for` view: UIView, with image: UIImage) {
         // Reseting the previous scale
         self.minimumZoomScale = 1
         self.zoomScale = 1
@@ -193,32 +243,19 @@ fileprivate extension YPAssetZoomableView {
         let w = image.size.width
         let h = image.size.height
 
+        var aspectRatio: CGFloat = 1
         var zoomScale: CGFloat = 1
-
+        
         if w > h { // Landscape
             aspectRatio = (h / w)
             view.frame.size.width = screenWidth
             view.frame.size.height = screenWidth * aspectRatio
-            
-            if let landscapeAspectRatio {
-                aspectRatio = landscapeAspectRatio
-                
-                let minHeight = screenWidth * landscapeAspectRatio
-                let k = minHeight / screenWidth
-                zoomScale = (w / h) * k
-            }
-            
         } else if h > w { // Portrait
             aspectRatio = w / h
             view.frame.size.width = screenWidth * aspectRatio
             view.frame.size.height = screenWidth
             
-            if let portraitAspectRatio {
-                aspectRatio = portraitAspectRatio
-                let minWidth = screenWidth * (1 / portraitAspectRatio)
-                let k = minWidth / screenWidth
-                zoomScale = (h / w) * k
-            } else if let minWidth = minWidthForItem {
+            if let minWidth = minWidthForItem {
                 let k = minWidth / screenWidth
                 zoomScale = (h / w) * k
             }
@@ -238,10 +275,45 @@ fileprivate extension YPAssetZoomableView {
         self.zoomScale = zoomScale
     }
     
+    func setAssetFrame_fixed(`for` view: UIView, with image: UIImage) {
+        guard let landscapeAspectRatio, let portraitAspectRatio else { return }
+        
+        // Reseting the previous scale
+        self.minimumZoomScale = 1
+        self.zoomScale = 1
+        
+        // Calculating and setting the image view frame depending on screenWidth
+        let screenWidth = YPImagePickerConfiguration.screenWidth
+        
+        let w = image.size.width
+        let h = image.size.height
+        
+        if w > h {
+            fixedAspectRatio = landscapeAspectRatio
+            view.frame.size.width = screenWidth * fixedAspectRatio * (w / h)
+            view.frame.size.height = screenWidth * fixedAspectRatio
+        } else if h > w {
+            fixedAspectRatio = portraitAspectRatio
+            view.frame.size.width = screenWidth * (1 / fixedAspectRatio)
+            view.frame.size.height = screenWidth * (1 / fixedAspectRatio) * (h / w)
+        } else {
+            fixedAspectRatio = 1
+            view.frame.size.width = screenWidth
+            view.frame.size.height = screenWidth
+        }
+        
+        view.center = center
+        centerAssetView_fixed()
+    }
+    
     /// Calculate zoom scale which will fit the image to square
     func calculateSquaredZoomScale() -> CGFloat {
         guard let image = assetImageView.image else {
             ypLog("No image"); return 1.0
+        }
+        
+        if YPConfig.library.fixCropAreaUsingAspectRatio {
+            return calculateSquaredZoomScale_fixed(image)
         }
         
         var squareZoomScale: CGFloat = 1.0
@@ -252,6 +324,20 @@ fileprivate extension YPAssetZoomableView {
             squareZoomScale = (w / h)
         } else if h > w { // Portrait
             squareZoomScale = (h / w)
+        }
+        
+        return squareZoomScale
+    }
+    
+    func calculateSquaredZoomScale_fixed(_ image: UIImage) -> CGFloat {
+        var squareZoomScale: CGFloat = 1.0
+        let w = image.size.width
+        let h = image.size.height
+        
+        if w > h { // Landscape
+            squareZoomScale = 1 / fixedAspectRatio
+        } else if h > w { // Portrait
+            squareZoomScale = fixedAspectRatio
         }
         
         return squareZoomScale
@@ -271,6 +357,22 @@ fileprivate extension YPAssetZoomableView {
         
         assetView.frame = assetFrame
     }
+    
+    func centerAssetView_fixed() {
+        let assetView = isVideoMode ? videoView : photoImageView
+        let scrollViewBoundsSize = self.bounds.size
+        var assetFrame = assetView.frame
+        let assetSize = assetFrame.size
+        
+        assetFrame.origin.x = (assetSize.width < scrollViewBoundsSize.width) ?
+            (scrollViewBoundsSize.width - assetSize.width) / 2.0 : 0
+        assetFrame.origin.y = (assetSize.height < scrollViewBoundsSize.height) ?
+            (scrollViewBoundsSize.height - assetSize.height) / 2.0 : 0.0
+        assetView.frame = assetFrame
+        
+        self.contentOffset.x = (assetSize.width > scrollViewBoundsSize.width) ? (assetSize.width - scrollViewBoundsSize.width) / 2.0 : 0
+        self.contentOffset.y = (assetSize.height > scrollViewBoundsSize.height) ? (assetSize.height - scrollViewBoundsSize.height) / 2.0 : 0
+    }
 }
 
 // MARK: UIScrollViewDelegate Protocol
@@ -282,7 +384,11 @@ extension YPAssetZoomableView: UIScrollViewDelegate {
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         zoomableViewDelegate?.ypAssetZoomableViewScrollViewDidZoom()
         
-        centerAssetView()
+        if YPConfig.library.fixCropAreaUsingAspectRatio {
+            centerAssetView_fixed()
+        } else {
+            centerAssetView()
+        }
     }
     
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
