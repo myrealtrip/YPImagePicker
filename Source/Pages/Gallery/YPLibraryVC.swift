@@ -204,6 +204,7 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
         } else {
             selectedItems.removeAll()
             addToSelection(indexPath: IndexPath(row: currentlySelectedIndex, section: 0))
+            changeAsset(mediaManager.getAsset(at: currentlySelectedIndex), forceChange: true)
         }
         
         v.assetViewContainer.setMultipleSelectionMode(on: isMultipleSelectionEnabled)
@@ -279,7 +280,7 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
         }
     }
     
-    func changeAsset(_ asset: PHAsset?) {
+    func changeAsset(_ asset: PHAsset?, forceChange: Bool = false) {
         guard let asset = asset else {
             print("No asset to change.")
             return
@@ -310,7 +311,8 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
                                                   mediaManager: self.mediaManager,
                                                   storedCropPosition: self.fetchStoredCrop(),
                                                   completion: completion,
-                                                  updateCropInfo: updateCropInfo)
+                                                  updateCropInfo: updateCropInfo,
+                                                  forceChange: forceChange)
             case .video:
                 self.v.assetZoomableView.setVideo(asset,
                                                   mediaManager: self.mediaManager,
