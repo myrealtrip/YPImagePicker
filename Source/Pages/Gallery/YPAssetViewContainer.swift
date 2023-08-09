@@ -17,17 +17,46 @@ final class YPAssetViewContainer: UIView {
     public let curtain = UIView()
     public let curtainView = YPCurtainView()
     public let spinnerView = UIView()
-    public let squareCropButton = UIButton()
+    public let squareCropButton: UIButton = {
+        let v = UIButton()
+        v.layer.cornerRadius = 18
+        v.clipsToBounds = true
+        
+        let image = imageFromBundle("ico_expand_content")
+        let normalImage = image.withTintColor(UIColor.white)
+        let selectedImage = image.withTintColor(UIColor(r: 16, g: 20, b: 24))
+        v.setImage(normalImage, for: .normal)
+        v.setImage(selectedImage, for: .selected)
+        v.setBackgroundColor(UIColor(r: 73, g: 80, b: 85), forState: .normal)
+        v.setBackgroundColor(UIColor.white, forState: .selected)
+        return v
+    }()
     public let multipleSelectionButton: UIButton = {
         let v = UIButton()
-        v.setImage(YPConfig.icons.multipleSelectionOffIcon, for: .normal)
+        v.layer.cornerRadius = 18
+        v.clipsToBounds = true
+        v.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        
+        let image = imageFromBundle("ico_select_library")
+        let normalImage = image.withTintColor(UIColor.white)
+        let selectedImage = image.withTintColor(UIColor(r: 16, g: 20, b: 24))
+        v.setImage(normalImage, for: .normal)
+        v.setImage(selectedImage, for: .selected)
+        v.setTitle("여러장 선택", for: .normal)
+        v.setTitle("여러장 선택", for: .selected)
+        v.setTitleColor(UIColor.white, for: .normal)
+        v.setTitleColor(UIColor(r: 16, g: 20, b: 24), for: .selected)
+        v.titleLabel?.font = .boldSystemFont(ofSize: 14)
+        
+        v.setBackgroundColor(UIColor(r: 73, g: 80, b: 85), forState: .normal)
+        v.setBackgroundColor(UIColor.white, forState: .selected)
         return v
     }()
     public var onlySquare = YPConfig.library.onlySquare
     public var isShown = true
     public var spinnerIsShown = false
     
-    private let spinner = UIActivityIndicatorView(style: .white)
+    private let spinner = UIActivityIndicatorView(style: .medium)
     private var shouldCropToSquare = YPConfig.library.isSquareByDefault
     private var isMultipleSelectionEnabled = false
 
@@ -83,17 +112,16 @@ final class YPAssetViewContainer: UIView {
 
         if !onlySquare {
             // Crop Button
-            squareCropButton.setImage(YPConfig.icons.cropIcon, for: .normal)
             subviews(squareCropButton)
-            squareCropButton.size(42)
-            |-15-squareCropButton
-            squareCropButton.Bottom == self.Bottom - 15
+            squareCropButton.size(36)
+            |-12-squareCropButton
+            squareCropButton.Bottom == self.Bottom - 12
         }
 
         // Multiple selection button
         subviews(multipleSelectionButton)
-        multipleSelectionButton.size(42).trailing(15)
-        multipleSelectionButton.Bottom == self.Bottom - 15
+        multipleSelectionButton.height(36).trailing(12)
+        multipleSelectionButton.Bottom == self.Bottom - 12
     }
 
     required init?(coder: NSCoder) {
@@ -105,6 +133,7 @@ final class YPAssetViewContainer: UIView {
     // MARK: - Square button
 
     @objc public func squareCropButtonTapped() {
+        squareCropButton.isSelected.toggle()
         let z = zoomableView.zoomScale
         shouldCropToSquare = (z >= 1 && z < zoomableView.squaredZoomScale)
         zoomableView.fitImage(shouldCropToSquare, animated: true)
@@ -138,8 +167,7 @@ final class YPAssetViewContainer: UIView {
     /// Use this to update the multiple selection mode UI state for the YPAssetViewContainer
     public func setMultipleSelectionMode(on: Bool) {
         isMultipleSelectionEnabled = on
-        let image = on ? YPConfig.icons.multipleSelectionOnIcon : YPConfig.icons.multipleSelectionOffIcon
-        multipleSelectionButton.setImage(image, for: .normal)
+        multipleSelectionButton.isSelected = on
         updateSquareCropButtonState()
         zoomableView.isMultipleSelectionEnabled = isMultipleSelectionEnabled
     }

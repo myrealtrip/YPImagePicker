@@ -87,7 +87,6 @@ class ExampleViewController: UIViewController {
         config.library.landscapeAspectRatio = (3/4)
         config.library.portraitAspectRatio = (5/4)
         config.library.fixCropAreaUsingAspectRatio = true
-//        config.library.minWidthForItem = UIScreen.main.bounds.width * 5/4
 
         config.gallery.hidesRemoveButton = false
         
@@ -97,6 +96,9 @@ class ExampleViewController: UIViewController {
         config.colors.assetViewBackgroundColor = .black
         config.colors.safeAreaBackgroundColor = .black
         config.colors.seperatorViewColor = .black
+        config.colors.multipleItemsSelectedCircleColor = UIColor(r: 16, g: 20, b: 24)
+        
+        config.fonts.multipleSelectionIndicatorFont = .boldSystemFont(ofSize: 13)
         
         
         let picker = YPImagePicker(configuration: config)

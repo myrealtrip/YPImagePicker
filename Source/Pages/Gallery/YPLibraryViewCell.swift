@@ -17,7 +17,7 @@ class YPMultipleSelectionIndicator: UIView {
     convenience init() {
         self.init(frame: .zero)
         
-        let size: CGFloat = 20
+        let size: CGFloat = 24
         
         subviews(
             circle,
@@ -40,13 +40,13 @@ class YPMultipleSelectionIndicator: UIView {
         label.isHidden = (number == nil)
         if let number = number {
             circle.backgroundColor = selectionColor
-            circle.layer.borderColor = UIColor.clear.cgColor
-            circle.layer.borderWidth = 0
+            circle.layer.borderColor = UIColor(r: 222, g: 226, b: 230).cgColor
+            circle.layer.borderWidth = 1.2
             label.text = "\(number)"
         } else {
-            circle.backgroundColor = UIColor.white.withAlphaComponent(0.3)
-            circle.layer.borderColor = UIColor.white.cgColor
-            circle.layer.borderWidth = 1
+            circle.backgroundColor = .white
+            circle.layer.borderColor = UIColor(r: 222, g: 226, b: 230).cgColor
+            circle.layer.borderWidth = 1.2
             label.text = ""
         }
     }
@@ -79,8 +79,8 @@ class YPLibraryViewCell: UICollectionViewCell {
         )
         
         layout(
-            3,
-            multipleSelectionIndicator-3-|
+            4,
+            multipleSelectionIndicator-4-|
         )
         
         imageView.contentMode = .scaleAspectFill
@@ -104,7 +104,7 @@ class YPLibraryViewCell: UICollectionViewCell {
     
     private func refreshSelection() {
         let showOverlay = isSelected || isHighlighted
-        selectionOverlay.alpha = showOverlay ? 0.6 : 0
+        selectionOverlay.alpha = showOverlay ? 0.7 : 0
     }
 
     private func setAccessibilityInfo() {
