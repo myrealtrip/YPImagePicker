@@ -21,8 +21,12 @@ class YPAlbumCell: UITableViewCell {
         
         let stackView = UIStackView()
         stackView.axis = .vertical
+        stackView.spacing = 4
         stackView.addArrangedSubview(title)
         stackView.addArrangedSubview(numberOfItems)
+        
+        thumbnail.layer.cornerRadius = 8
+        thumbnail.clipsToBounds = true
         
         subviews(
             thumbnail,
@@ -31,16 +35,20 @@ class YPAlbumCell: UITableViewCell {
         
         layout(
             6,
-            |-10-thumbnail.size(78),
+            |-12-thumbnail.size(72),
             6
         )
         
-        align(horizontally: thumbnail-10-stackView)
+        align(horizontally: thumbnail-12-stackView)
         
         thumbnail.contentMode = .scaleAspectFill
         thumbnail.clipsToBounds = true
+        thumbnail.backgroundColor = YPConfig.colors.albumCellThumbnailBackgroundColor
         
         title.font = YPConfig.fonts.albumCellTitleFont
+        title.textColor = YPConfig.colors.albumCellTitleColor
         numberOfItems.font = YPConfig.fonts.albumCellNumberOfItemsFont
+        numberOfItems.textColor = YPConfig.colors.albumCellTitleColor
+        backgroundColor = YPConfig.colors.albumBackgroundColor
     }
 }

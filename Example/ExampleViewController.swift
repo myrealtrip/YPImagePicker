@@ -91,14 +91,25 @@ class ExampleViewController: UIViewController {
         config.gallery.hidesRemoveButton = false
         
         config.wordings.libraryTitle = "최근 항목"
+        config.wordings.albumsTitle = "앨범 선택"
         
         config.colors.libraryScreenBackgroundColor = .black
         config.colors.assetViewBackgroundColor = .black
         config.colors.safeAreaBackgroundColor = .black
         config.colors.seperatorViewColor = .black
-        config.colors.multipleItemsSelectedCircleColor = UIColor(r: 16, g: 20, b: 24)
+        config.colors.multipleItemsSelectedCircleColor = UIColor(r: 16, g: 20, b: 24)   // .gray1000
+        config.colors.albumBackgroundColor = UIColor(r: 16, g: 20, b: 24)   // .gray1000
+        config.colors.albumBarTintColor = UIColor(r: 16, g: 20, b: 24)   // .gray1000
+        config.colors.albumTitleColor = .white
+        config.colors.albumTintColor = .white
+        config.colors.albumCellThumbnailBackgroundColor = UIColor(r: 52, g: 58, b: 64) // .gray800
+        config.colors.albumCellTitleColor = .white
         
-        config.fonts.multipleSelectionIndicatorFont = .boldSystemFont(ofSize: 13)
+        
+        config.fonts.multipleSelectionIndicatorFont = .boldSystemFont(ofSize: 13)   // .paragraphBold14
+        config.fonts.navigationBarTitleFont = .boldSystemFont(ofSize: 17)   // .headlineNormal17
+        config.fonts.albumCellTitleFont = .boldSystemFont(ofSize: 16)   // .headlineNormal16
+        config.fonts.albumCellNumberOfItemsFont = .boldSystemFont(ofSize: 13)   // .captionNormal13
         
         
         let picker = YPImagePicker(configuration: config)

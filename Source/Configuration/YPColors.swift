@@ -85,4 +85,10 @@ public struct YPColors {
     public var albumTintColor: UIColor = .ypLabel
     /// The color of the Album's title color
     public var albumTitleColor: UIColor = .ypLabel
+    /// The color of the Album's background color
+    public var albumBackgroundColor: UIColor = .ypSystemBackground
+    /// The color of the Album's thumbnail default color
+    public var albumCellThumbnailBackgroundColor: UIColor?
+    /// The color of the Album's title and numberOfItme label text color
+    public var albumCellTitleColor: UIColor = .ypLabel
 }

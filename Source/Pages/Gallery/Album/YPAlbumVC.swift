@@ -34,13 +34,13 @@ class YPAlbumVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: YPConfig.wordings.cancel,
-                                                           style: .plain,
-                                                           target: self,
-                                                           action: #selector(close))
-        navigationItem.leftBarButtonItem?.setFont(font: YPConfig.fonts.leftBarButtonFont, forState: .normal)
         navigationController?.navigationBar.titleTextAttributes = [.font: YPConfig.fonts.navigationBarTitleFont,
                                                                    .foregroundColor: YPConfig.colors.albumTitleColor]
+        let image = imageFromBundle("ico_close").withTintColor(.white)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: image,
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(close))
         navigationController?.navigationBar.barTintColor = YPConfig.colors.albumBarTintColor
         navigationController?.navigationBar.tintColor = YPConfig.colors.albumTintColor
         setUpTableView()
@@ -69,7 +69,7 @@ class YPAlbumVC: UIViewController {
         v.tableView.dataSource = self
         v.tableView.delegate = self
         v.tableView.rowHeight = UITableView.automaticDimension
-        v.tableView.estimatedRowHeight = 80
+        v.tableView.estimatedRowHeight = 84
         v.tableView.separatorStyle = .none
         v.tableView.register(YPAlbumCell.self, forCellReuseIdentifier: "AlbumCell")
     }
