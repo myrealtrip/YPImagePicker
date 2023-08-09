@@ -73,7 +73,9 @@ open class YPImagePicker: UINavigationController {
         viewControllers = [picker]
         setupLoadingView()
         navigationBar.isTranslucent = false
-        navigationBar.tintColor = .ypLabel
+        navigationBar.tintColor = YPConfig.colors.defaultNavigationBarTitleColor
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: YPConfig.colors.defaultNavigationBarTitleColor]
+        navigationBar.backgroundColor = YPConfig.colors.defaultNavigationBarColor
         view.backgroundColor = .ypSystemBackground
 
         picker.didSelectItems = { [weak self] items in

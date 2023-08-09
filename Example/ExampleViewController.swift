@@ -93,6 +93,8 @@ class ExampleViewController: UIViewController {
         config.wordings.libraryTitle = "최근 항목"
         config.wordings.albumsTitle = "앨범 선택"
         
+        config.colors.defaultNavigationBarColor = .black
+        config.colors.defaultNavigationBarTitleColor = .white
         config.colors.libraryScreenBackgroundColor = .black
         config.colors.assetViewBackgroundColor = .black
         config.colors.safeAreaBackgroundColor = .black
@@ -111,7 +113,7 @@ class ExampleViewController: UIViewController {
         config.colors.buttonImageColorForNormal = .white
         config.colors.buttonImageColorForSelected = UIColor(r: 16, g: 20, b: 24)    // .gray1000
         
-        
+        config.fonts.pickerTitleFont = .systemFont(ofSize: 17, weight: .semibold)   // .headlineNormal17
         config.fonts.multipleSelectionIndicatorFont = .boldSystemFont(ofSize: 13)   // .captionBold13
         config.fonts.navigationBarTitleFont = .boldSystemFont(ofSize: 17)   // .headlineNormal17
         config.fonts.albumCellTitleFont = .boldSystemFont(ofSize: 16)   // .headlineNormal16

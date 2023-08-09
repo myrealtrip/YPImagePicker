@@ -59,6 +59,8 @@ public struct YPColors {
     /// The default color of all navigation bars except album's.
     public var defaultNavigationBarColor: UIColor = .offWhiteOrBlack
     
+    public var defaultNavigationBarTitleColor: UIColor = .ypLabel
+    
     public var seperatorViewColor: UIColor = .ypSystemBackground
 
     // MARK: - Trimmer
