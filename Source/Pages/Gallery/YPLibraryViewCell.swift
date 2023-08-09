@@ -40,12 +40,12 @@ class YPMultipleSelectionIndicator: UIView {
         label.isHidden = (number == nil)
         if let number = number {
             circle.backgroundColor = selectionColor
-            circle.layer.borderColor = UIColor(r: 222, g: 226, b: 230).cgColor
+            circle.layer.borderColor = YPConfig.colors.multipleItemsSelectedCircleBorderColor?.cgColor
             circle.layer.borderWidth = 1.2
             label.text = "\(number)"
         } else {
             circle.backgroundColor = .white
-            circle.layer.borderColor = UIColor(r: 222, g: 226, b: 230).cgColor
+            circle.layer.borderColor = YPConfig.colors.multipleItemsSelectedCircleBorderColor?.cgColor
             circle.layer.borderWidth = 1.2
             label.text = ""
         }

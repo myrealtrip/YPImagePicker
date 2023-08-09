@@ -23,12 +23,10 @@ final class YPAssetViewContainer: UIView {
         v.clipsToBounds = true
         
         let image = imageFromBundle("ico_expand_content")
-        let normalImage = image.withTintColor(UIColor.white)
-        let selectedImage = image.withTintColor(UIColor(r: 16, g: 20, b: 24))
-        v.setImage(normalImage, for: .normal)
-        v.setImage(selectedImage, for: .selected)
-        v.setBackgroundColor(UIColor(r: 73, g: 80, b: 85), forState: .normal)
-        v.setBackgroundColor(UIColor.white, forState: .selected)
+        v.setImage(image.withTintColor(YPConfig.colors.buttonImageColorForNormal), for: .normal)
+        v.setImage(image.withTintColor(YPConfig.colors.buttonImageColorForSelected), for: .selected)
+        v.setBackgroundColor(YPConfig.colors.buttonBackgroundColorForNormal, forState: .normal)
+        v.setBackgroundColor(YPConfig.colors.buttonBackgroundColorForSelected, forState: .selected)
         return v
     }()
     public let multipleSelectionButton: UIButton = {
@@ -38,18 +36,16 @@ final class YPAssetViewContainer: UIView {
         v.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         
         let image = imageFromBundle("ico_select_library")
-        let normalImage = image.withTintColor(UIColor.white)
-        let selectedImage = image.withTintColor(UIColor(r: 16, g: 20, b: 24))
-        v.setImage(normalImage, for: .normal)
-        v.setImage(selectedImage, for: .selected)
+        v.setImage(image.withTintColor(YPConfig.colors.buttonImageColorForNormal), for: .normal)
+        v.setImage(image.withTintColor(YPConfig.colors.buttonImageColorForSelected), for: .selected)
         v.setTitle("여러장 선택", for: .normal)
         v.setTitle("여러장 선택", for: .selected)
-        v.setTitleColor(UIColor.white, for: .normal)
-        v.setTitleColor(UIColor(r: 16, g: 20, b: 24), for: .selected)
-        v.titleLabel?.font = .boldSystemFont(ofSize: 14)
+        v.setTitleColor(YPConfig.colors.buttonImageColorForNormal, for: .normal)
+        v.setTitleColor(YPConfig.colors.buttonImageColorForSelected, for: .selected)
+        v.titleLabel?.font = YPConfig.fonts.buttonTitleFont
         
-        v.setBackgroundColor(UIColor(r: 73, g: 80, b: 85), forState: .normal)
-        v.setBackgroundColor(UIColor.white, forState: .selected)
+        v.setBackgroundColor(YPConfig.colors.buttonBackgroundColorForNormal, forState: .normal)
+        v.setBackgroundColor(YPConfig.colors.buttonBackgroundColorForSelected, forState: .selected)
         return v
     }()
     public var onlySquare = YPConfig.library.onlySquare

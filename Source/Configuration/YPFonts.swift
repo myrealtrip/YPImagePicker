@@ -40,4 +40,7 @@ public struct YPFonts {
 
     /// The font used in the UINavigationBar leftBarButtonItem
     public var leftBarButtonFont: UIFont?
+    
+    /// The font used in the squareCrop and multipleSelection Button
+    public var buttonTitleFont: UIFont = .systemFont(ofSize: 14, weight: .semibold)
 }

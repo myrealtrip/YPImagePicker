@@ -23,6 +23,9 @@ public struct YPColors {
     /// Default is nil, which takes tintColor.
     public var multipleItemsSelectedCircleColor: UIColor?
     
+    /// A color for circle's border for selected items in multiple selection
+    public var multipleItemsSelectedCircleBorderColor: UIColor?
+    
     /// The background color of the bottom of photo and video screens.
     public var photoVideoScreenBackgroundColor: UIColor = .offWhiteOrBlack
 
@@ -91,4 +94,15 @@ public struct YPColors {
     public var albumCellThumbnailBackgroundColor: UIColor?
     /// The color of the Album's title and numberOfItme label text color
     public var albumCellTitleColor: UIColor = .ypLabel
+    
+    
+    // MARK: - Button
+    /// The color of squareCrop and multipleSelection Button's backgroundColor for normal state
+    public var buttonBackgroundColorForNormal: UIColor = .ypSystemGray
+    /// The color of squareCrop and multipleSelection Button's backgroundColor for selected state
+    public var buttonBackgroundColorForSelected: UIColor = .ypSystemBackground
+    /// The color of squareCrop and multipleSelection Button's image color for normal state
+    public var buttonImageColorForNormal: UIColor = .ypSystemBackground
+    /// The color of squareCrop and multipleSelection Button's image color for selected state
+    public var buttonImageColorForSelected: UIColor = .ypSystemGray
 }
