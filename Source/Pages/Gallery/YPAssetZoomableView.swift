@@ -26,7 +26,7 @@ final class YPAssetZoomableView: UIScrollView {
     public var minWidthForItem: CGFloat? = YPConfig.library.minWidthForItem
     public var landscapeAspectRatio: CGFloat? = YPConfig.library.landscapeAspectRatio
     public var portraitAspectRatio: CGFloat? = YPConfig.library.portraitAspectRatio
-    public var fixedAspectRatio: CGFloat = 1    // 기본값 4:3
+    public var fixedAspectRatio: CGFloat = YPConfig.library.fixedAspectRatio
     public var isMultipleSelectionEnabled = false
     
     fileprivate var currentAsset: PHAsset?
