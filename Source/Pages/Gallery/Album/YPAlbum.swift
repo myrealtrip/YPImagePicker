@@ -10,8 +10,8 @@ import UIKit
 import Photos
 
 public struct YPAlbum {
+    public var title: String = ""
     var thumbnail: UIImage?
-    var title: String = ""
     var numberOfItems: Int = 0
     var collection: PHAssetCollection?
 }
