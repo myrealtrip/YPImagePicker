@@ -15,7 +15,7 @@ public class YPAlbumVC: UIViewController {
          return YPConfig.hidesStatusBar
     }
     
-    var didSelectAlbum: ((YPAlbum) -> Void)?
+    public var didSelectAlbum: ((YPAlbum) -> Void)?
     var albums = [YPAlbum]()
     let albumsManager: YPAlbumsManager
     
