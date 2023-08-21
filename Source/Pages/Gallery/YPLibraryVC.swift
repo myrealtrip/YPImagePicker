@@ -11,11 +11,11 @@ import Photos
 import PhotosUI
 
 public class YPLibraryVC: UIViewController, YPPermissionCheckable {
-    internal weak var delegate: YPLibraryViewDelegate?
-    internal var v = YPLibraryView(frame: .zero)
-    internal var isProcessing = false // true if video or image is in processing state
+    public weak var delegate: YPLibraryViewDelegate?
+    public var v = YPLibraryView(frame: .zero)
+    public var isProcessing = false // true if video or image is in processing state
+    public let mediaManager = LibraryMediaManager()
     internal var selectedItems = [YPLibrarySelection]()
-    internal let mediaManager = LibraryMediaManager()
     internal var isMultipleSelectionEnabled = false
     internal var currentlySelectedIndex: Int = 0
     internal let panGestureHelper = PanGestureHelper()
@@ -88,7 +88,7 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
         }
     }
 
-    func setAlbum(_ album: YPAlbum) {
+    public func setAlbum(_ album: YPAlbum) {
         title = album.title
         mediaManager.collection = album.collection
         currentlySelectedIndex = 0
@@ -579,7 +579,7 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
     
     // MARK: - Player
     
-    func pausePlayer() {
+    public func pausePlayer() {
         v.assetZoomableView.videoView.pause()
     }
     

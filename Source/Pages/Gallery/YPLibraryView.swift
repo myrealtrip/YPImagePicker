@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-internal final class YPLibraryView: UIView {
+public final class YPLibraryView: UIView {
 
     // MARK: - Public vars
 
@@ -96,6 +96,9 @@ internal final class YPLibraryView: UIView {
     }
 
     // MARK: - Public Methods
+    public func deallocateVideoView() {
+        assetZoomableView.videoView.deallocate()
+    }
 
     // MARK: Overlay view
 
@@ -105,7 +108,7 @@ internal final class YPLibraryView: UIView {
 
     // MARK: Loader and progress
 
-    func fadeInLoader() {
+    public func fadeInLoader() {
         shouldShowLoader = true
         // Only show loader if full res image takes more than 0.5s to load.
         if #available(iOS 10.0, *) {
@@ -124,7 +127,7 @@ internal final class YPLibraryView: UIView {
         }
     }
 
-    func hideLoader() {
+    public func hideLoader() {
         shouldShowLoader = false
         assetViewContainer.spinnerView.alpha = 0
     }

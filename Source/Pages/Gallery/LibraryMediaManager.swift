@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-class LibraryMediaManager {
+public class LibraryMediaManager {
     
     weak var v: YPLibraryView?
     var collection: PHAssetCollection?
@@ -213,7 +213,7 @@ class LibraryMediaManager {
         }
     }
     
-    func forseCancelExporting() {
+    public func forseCancelExporting() {
         for s in self.currentExportSessions {
             s.cancelExport()
         }
