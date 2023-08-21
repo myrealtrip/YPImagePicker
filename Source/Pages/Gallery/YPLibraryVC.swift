@@ -10,7 +10,7 @@ import UIKit
 import Photos
 import PhotosUI
 
-internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
+public class YPLibraryVC: UIViewController, YPPermissionCheckable {
     internal weak var delegate: YPLibraryViewDelegate?
     internal var v = YPLibraryView(frame: .zero)
     internal var isProcessing = false // true if video or image is in processing state
@@ -23,7 +23,7 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
 
     // MARK: - Init
 
-    internal override func loadView() {
+    public override func loadView() {
         view = v
     }
 
@@ -32,7 +32,7 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
         title = YPConfig.wordings.libraryTitle
     }
 
-    internal required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
