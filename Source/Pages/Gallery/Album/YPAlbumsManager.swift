@@ -14,6 +14,8 @@ public class YPAlbumsManager {
     
     private var cachedAlbums: [YPAlbum]?
     
+    init() {}
+    
     func fetchAlbums() -> [YPAlbum] {
         if let cachedAlbums = cachedAlbums {
             return cachedAlbums
