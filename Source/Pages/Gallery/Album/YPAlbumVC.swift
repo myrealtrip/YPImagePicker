@@ -22,7 +22,7 @@ public class YPAlbumVC: UIViewController {
     let v = YPAlbumView()
     public override func loadView() { view = v }
     
-    required init(albumsManager: YPAlbumsManager) {
+    public required init(albumsManager: YPAlbumsManager) {
         self.albumsManager = albumsManager
         super.init(nibName: nil, bundle: nil)
         title = YPConfig.wordings.albumsTitle
