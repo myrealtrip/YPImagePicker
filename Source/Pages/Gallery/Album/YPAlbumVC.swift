@@ -9,9 +9,9 @@
 import UIKit
 import Photos
 
-class YPAlbumVC: UIViewController {
+public class YPAlbumVC: UIViewController {
     
-    override var prefersStatusBarHidden: Bool {
+    public override var prefersStatusBarHidden: Bool {
          return YPConfig.hidesStatusBar
     }
     
@@ -20,7 +20,7 @@ class YPAlbumVC: UIViewController {
     let albumsManager: YPAlbumsManager
     
     let v = YPAlbumView()
-    override func loadView() { view = v }
+    public override func loadView() { view = v }
     
     required init(albumsManager: YPAlbumsManager) {
         self.albumsManager = albumsManager
@@ -32,7 +32,7 @@ class YPAlbumVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.titleTextAttributes = [.font: YPConfig.fonts.navigationBarTitleFont,
                                                                    .foregroundColor: YPConfig.colors.albumTitleColor]
@@ -77,11 +77,11 @@ class YPAlbumVC: UIViewController {
 
 extension YPAlbumVC: UITableViewDataSource {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return albums.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let album = albums[indexPath.row]
         if let cell = tableView.dequeueReusableCell(withIdentifier: "AlbumCell", for: indexPath) as? YPAlbumCell {
             cell.thumbnail.backgroundColor = .ypSystemGray
