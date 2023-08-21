@@ -27,16 +27,16 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
         view = v
     }
 
-    required init() {
+    public required init() {
         super.init(nibName: nil, bundle: nil)
         title = YPConfig.wordings.libraryTitle
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func initialize() {
+    public func initialize() {
         guard isInitialized == false else {
             return
         }
