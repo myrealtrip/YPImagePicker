@@ -11,6 +11,7 @@ import Photos
 
 public class YPAlbumVC: UIViewController {
     
+    public var titleString: String? { title }
     public override var prefersStatusBarHidden: Bool {
          return YPConfig.hidesStatusBar
     }
