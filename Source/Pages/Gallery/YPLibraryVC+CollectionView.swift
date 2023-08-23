@@ -91,9 +91,9 @@ extension YPLibraryVC {
             return
         }
 
-        didSelect?(asset)
         let newSelection = YPLibrarySelection(index: indexPath.row, assetIdentifier: asset.localIdentifier)
         selectedItems.append(newSelection)
+        didSelect?(asset)
         checkLimit()
     }
     
