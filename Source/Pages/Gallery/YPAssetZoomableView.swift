@@ -26,7 +26,8 @@ final class YPAssetZoomableView: UIScrollView {
     public var minWidthForItem: CGFloat? = YPConfig.library.minWidthForItem
     public var landscapeAspectRatio: CGFloat? = YPConfig.library.landscapeAspectRatio
     public var portraitAspectRatio: CGFloat? = YPConfig.library.portraitAspectRatio
-    public var fixedAspectRatio: CGFloat = YPConfig.library.fixedAspectRatio
+    public var fixedAspectRatio: CGFloat = 1
+    public var initialFixedAspectRatio: CGFloat? = YPConfig.library.initialFixedAspectRatio
     public var isMultipleSelectionEnabled = false
     
     fileprivate var currentAsset: PHAsset?
@@ -247,6 +248,12 @@ fileprivate extension YPAssetZoomableView {
     func setAssetFrame(`for` view: UIView, with image: UIImage) {
 
         if YPConfig.library.fixCropAreaUsingAspectRatio {
+            if let initialFixedAspectRatio {
+                fixedAspectRatio = initialFixedAspectRatio
+                fitImageAtFixedRatio(for: view, with: image)
+                return
+            }
+            
             if isMultipleSelectionEnabled {
                 fitImageAtFixedRatio(for: view, with: image)
                 return

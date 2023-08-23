@@ -38,8 +38,8 @@ final class YPAssetViewContainer: UIView {
         let image = imageFromBundle("ico_select_library")
         v.setImage(image.withTintColor(YPConfig.colors.buttonImageColorForNormal), for: .normal)
         v.setImage(image.withTintColor(YPConfig.colors.buttonImageColorForSelected), for: .selected)
-        v.setTitle("여러장 선택", for: .normal)
-        v.setTitle("여러장 선택", for: .selected)
+        v.setTitle(" 여러장 선택", for: .normal)
+        v.setTitle(" 여러장 선택", for: .selected)
         v.setTitleColor(YPConfig.colors.buttonImageColorForNormal, for: .normal)
         v.setTitleColor(YPConfig.colors.buttonImageColorForSelected, for: .selected)
         v.titleLabel?.font = YPConfig.fonts.buttonTitleFont

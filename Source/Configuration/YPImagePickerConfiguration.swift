@@ -238,8 +238,9 @@ public struct YPConfigLibrary {
     /// show curtainView. curtainView will fit for zoomableView's aspectRatio
     public var fixCropAreaUsingAspectRatio: Bool = false
     
-    /// It will works when fixCropAreaUsingAspectRatio is true.
-    public var fixedAspectRatio: CGFloat = (3 / 4)
+    /// It will works when fixCropAreaUsingAspectRatio is true. If it has a value, croparea will fixed by this.
+    public var initialFixedAspectRatio: CGFloat?
+
 }
 
 /// Encapsulates video specific settings.

@@ -20,6 +20,9 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
     internal var currentlySelectedIndex: Int = 0
     internal let panGestureHelper = PanGestureHelper()
     internal var isInitialized = false
+    
+    var didSelect: ((_ asset: PHAsset) -> Void)?
+    var didDeselect: ((_ asset: PHAsset) -> Void)?
 
     // MARK: - Init
 
