@@ -241,6 +241,8 @@ public struct YPConfigLibrary {
     /// It will works when fixCropAreaUsingAspectRatio is true. If it has a value, croparea will fixed by this.
     public var initialFixedAspectRatio: CGFloat?
 
+    /// Set true, if you would like to use your warning view
+    public var useCustomMaxNumberWaningView: Bool = false
 }
 
 /// Encapsulates video specific settings.
