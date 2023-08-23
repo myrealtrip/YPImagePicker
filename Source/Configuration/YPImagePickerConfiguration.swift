@@ -243,6 +243,9 @@ public struct YPConfigLibrary {
 
     /// Set true, if you would like to use your warning view
     public var useCustomMaxNumberWaningView: Bool = false
+    
+    /// Used this value in check limit
+    public var preSelectedItemCount: Int = 0
 }
 
 /// Encapsulates video specific settings.
