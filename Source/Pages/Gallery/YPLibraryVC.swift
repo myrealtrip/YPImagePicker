@@ -17,8 +17,8 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
     public let mediaManager = LibraryMediaManager()
     public var didSelect: ((_ asset: PHAsset) -> Void)?
     public var didDeselect: ((_ asset: PHAsset) -> Void)?
+    public var selectedItems = [YPLibrarySelection]()
     
-    internal var selectedItems = [YPLibrarySelection]()
     internal var isMultipleSelectionEnabled = false
     internal var currentlySelectedIndex: Int = 0
     internal let panGestureHelper = PanGestureHelper()
