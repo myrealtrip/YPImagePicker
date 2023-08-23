@@ -15,14 +15,15 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
     public var v = YPLibraryView(frame: .zero)
     public var isProcessing = false // true if video or image is in processing state
     public let mediaManager = LibraryMediaManager()
+    public var didSelect: ((_ asset: PHAsset) -> Void)?
+    public var didDeselect: ((_ asset: PHAsset) -> Void)?
+    
     internal var selectedItems = [YPLibrarySelection]()
     internal var isMultipleSelectionEnabled = false
     internal var currentlySelectedIndex: Int = 0
     internal let panGestureHelper = PanGestureHelper()
     internal var isInitialized = false
     
-    var didSelect: ((_ asset: PHAsset) -> Void)?
-    var didDeselect: ((_ asset: PHAsset) -> Void)?
 
     // MARK: - Init
 
