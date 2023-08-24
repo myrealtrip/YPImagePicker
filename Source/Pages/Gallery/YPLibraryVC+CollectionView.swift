@@ -77,6 +77,7 @@ extension YPLibraryVC {
             
             checkLimit()
         }
+    }
     
     func deselect(indexPath: IndexPath) {
         if let positionIndex = selectedItems.firstIndex(where: {
