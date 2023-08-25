@@ -169,7 +169,7 @@ extension YPLibraryVC: UICollectionViewDelegate {
         cell.durationLabel.isHidden = !isVideo
         cell.durationLabel.text = isVideo ? YPHelper.formattedStrigFrom(asset.duration) : ""
         cell.multipleSelectionIndicator.isHidden = !isMultipleSelectionEnabled
-        cell.isSelected = currentlySelectedIndex == indexPath.row
+        cell.showSelectedOverlay = currentlySelectedIndex == indexPath.row
         
         // Set correct selection number
         if let index = selectedItems.firstIndex(where: { $0.assetIdentifier == asset.localIdentifier }) {
@@ -227,7 +227,7 @@ extension YPLibraryVC: UICollectionViewDelegate {
             // which triggered photoLibraryDidChange() and reloadItems() which breaks selection.
             //
             if let previousCell = collectionView.cellForItem(at: previouslySelectedIndexPath) as? YPLibraryViewCell {
-                previousCell.isSelected = false
+                previousCell.showSelectedOverlay = false
             }
         }
     }

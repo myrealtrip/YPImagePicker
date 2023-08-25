@@ -54,6 +54,9 @@ class YPMultipleSelectionIndicator: UIView {
 
 class YPLibraryViewCell: UICollectionViewCell {
     
+    var showSelectedOverlay: Bool = false {
+        didSet { refreshSelection() }
+    }
     var representedAssetIdentifier: String!
     let imageView = UIImageView()
     let durationLabel = UILabel()
@@ -93,17 +96,13 @@ class YPLibraryViewCell: UICollectionViewCell {
         backgroundColor = .ypSecondarySystemBackground
         setAccessibilityInfo()
     }
-
-    override var isSelected: Bool {
-        didSet { refreshSelection() }
-    }
     
     override var isHighlighted: Bool {
         didSet { refreshSelection() }
     }
     
     private func refreshSelection() {
-        let showOverlay = isSelected || isHighlighted
+        let showOverlay = showSelectedOverlay || isHighlighted
         selectionOverlay.alpha = showOverlay ? 0.7 : 0
     }
 

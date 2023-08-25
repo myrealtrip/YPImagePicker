@@ -23,7 +23,7 @@ extension PHCachingImageManager {
     func fetchImage(for asset: PHAsset,
 					cropRect: CGRect,
 					targetSize: CGSize,
-					callback: @escaping (UIImage, [String: Any]) -> Void) {
+					callback: @escaping (UIImage, [String: Any], Data) -> Void) {
         let options = photoImageRequestOptions()
     
         // Fetch Highiest quality image possible.
@@ -40,7 +40,7 @@ extension PHCachingImageManager {
                 if let imageRef = image.cgImage?.cropping(to: scaledCropRect) {
                     let croppedImage = UIImage(cgImage: imageRef)
                     let exifs = self.metadataForImageData(data: data)
-                    callback(croppedImage, exifs)
+                    callback(croppedImage, exifs, data)
                 }
             }
         }
