@@ -97,12 +97,16 @@ class YPLibraryViewCell: UICollectionViewCell {
         setAccessibilityInfo()
     }
     
+    override var isSelected: Bool {
+        didSet { refreshSelection() }
+    }
+    
     override var isHighlighted: Bool {
         didSet { refreshSelection() }
     }
     
     private func refreshSelection() {
-        let showOverlay = showSelectedOverlay || isHighlighted
+        let showOverlay = showSelectedOverlay || isHighlighted || isSelected
         selectionOverlay.alpha = showOverlay ? 0.7 : 0
     }
 
