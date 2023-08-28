@@ -418,11 +418,7 @@ extension YPAssetZoomableView: UIScrollViewDelegate {
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         zoomableViewDelegate?.ypAssetZoomableViewScrollViewDidZoom()
         
-        if YPConfig.library.fixCropAreaUsingAspectRatio {
-            centerAssetView_fixed()
-        } else {
-            centerAssetView()
-        }
+        centerAssetView()
     }
     
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {

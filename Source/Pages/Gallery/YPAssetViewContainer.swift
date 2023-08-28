@@ -33,13 +33,14 @@ final class YPAssetViewContainer: UIView {
         let v = UIButton()
         v.layer.cornerRadius = 18
         v.clipsToBounds = true
-        v.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        v.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10+6+4)
+        v.titleEdgeInsets = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: -6-4)
         
         let image = imageFromBundle("ico_select_library")
         v.setImage(image.withTintColor(YPConfig.colors.buttonImageColorForNormal), for: .normal)
         v.setImage(image.withTintColor(YPConfig.colors.buttonImageColorForSelected), for: .selected)
-        v.setTitle(" 여러장 선택", for: .normal)
-        v.setTitle(" 여러장 선택", for: .selected)
+        v.setTitle("여러장 선택", for: .normal)
+        v.setTitle("여러장 선택", for: .selected)
         v.setTitleColor(YPConfig.colors.buttonImageColorForNormal, for: .normal)
         v.setTitleColor(YPConfig.colors.buttonImageColorForSelected, for: .selected)
         v.titleLabel?.font = YPConfig.fonts.buttonTitleFont
