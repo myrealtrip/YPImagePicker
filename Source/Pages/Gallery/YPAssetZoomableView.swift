@@ -50,6 +50,19 @@ final class YPAssetZoomableView: UIScrollView {
         }
     }
     
+    public func fitImage_fixed(_ fit: Bool, animated isAnimated: Bool = false) {
+        if fit {
+            let zoomScale = calculateSquaredZoomScale_fixed()
+            if self.zoomScale >= zoomScale { return }
+            
+            minimumZoomScale = zoomScale
+            setZoomScale(zoomScale, animated: isAnimated)
+        } else {
+            minimumZoomScale = 1
+            setZoomScale(1, animated: isAnimated)
+        }
+    }
+    
     /// Re-apply correct scrollview settings if image has already been adjusted in
     /// multiple selection mode so that user can see where they left off.
     public func applyStoredCropPosition(_ scp: YPLibrarySelection) {
@@ -321,7 +334,7 @@ fileprivate extension YPAssetZoomableView {
         
         let w = image.size.width
         let h = image.size.height
-        
+                
         if w > h {
             fixedAspectRatio = landscapeAspectRatio
             view.frame.size.width = screenWidth * fixedAspectRatio * (w / h)
@@ -338,16 +351,14 @@ fileprivate extension YPAssetZoomableView {
         
         view.center = center
         centerAssetView_fixed()
+        
+        minimumZoomScale = calculateSquaredZoomScale_fixed()
     }
     
     /// Calculate zoom scale which will fit the image to square
     func calculateSquaredZoomScale() -> CGFloat {
         guard let image = assetImageView.image else {
             ypLog("No image"); return 1.0
-        }
-        
-        if YPConfig.library.fixCropAreaUsingAspectRatio {
-            return calculateSquaredZoomScale_fixed(image)
         }
         
         var squareZoomScale: CGFloat = 1.0
@@ -363,7 +374,11 @@ fileprivate extension YPAssetZoomableView {
         return squareZoomScale
     }
     
-    func calculateSquaredZoomScale_fixed(_ image: UIImage) -> CGFloat {
+    func calculateSquaredZoomScale_fixed() -> CGFloat {
+        guard let image = assetImageView.image else {
+            ypLog("No image"); return 1.0
+        }
+        
         var squareZoomScale: CGFloat = 1.0
         let w = image.size.width
         let h = image.size.height

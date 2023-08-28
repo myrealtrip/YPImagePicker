@@ -131,10 +131,15 @@ final class YPAssetViewContainer: UIView {
 
     @objc public func squareCropButtonTapped() {
         squareCropButton.isSelected.toggle()
-        let z = zoomableView.zoomScale
-        shouldCropToSquare = (z >= 1 && z < zoomableView.squaredZoomScale)
-        zoomableView.fitImage(shouldCropToSquare, animated: true)
-        updateCurtainView(ratio: shouldCropToSquare ? 1 : zoomableView.fixedAspectRatio)
+        if YPConfig.library.fixCropAreaUsingAspectRatio {
+            let fit = squareCropButton.isSelected
+            updateCurtainView(ratio: fit ? 1 : zoomableView.fixedAspectRatio)
+            zoomableView.fitImage_fixed(fit, animated: true)
+        } else {
+            let z = zoomableView.zoomScale
+            shouldCropToSquare = (z >= 1 && z < zoomableView.squaredZoomScale)
+            zoomableView.fitImage(shouldCropToSquare, animated: true)
+        }
     }
 
     /// Update only UI of square crop button.
