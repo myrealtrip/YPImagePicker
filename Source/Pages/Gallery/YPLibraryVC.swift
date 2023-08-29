@@ -18,6 +18,7 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
     public var didSelect: ((_ asset: PHAsset) -> Void)?
     public var didDeselect: ((_ asset: PHAsset) -> Void)?
     public var selectedItems = [YPLibrarySelection]()
+    public var fixedAspectRatio: CGFloat { v.assetViewContainer.zoomableView.fixedAspectRatio }
     
     internal var isMultipleSelectionEnabled = false
     internal var currentlySelectedIndex: Int = 0
