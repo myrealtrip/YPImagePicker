@@ -294,6 +294,11 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
         delegate?.libraryViewStartedLoadingImage()
         
         let completion = { (isLowResIntermediaryImage: Bool) in
+            if YPConfig.library.fixCropAreaUsingAspectRatio {
+                self.v.assetViewContainer.squareCropButton.isSelected = false
+                self.v.assetViewContainer.updateCurtainView(ratio: self.v.assetZoomableView.fixedAspectRatio)
+            }
+            
             self.v.hideOverlayView()
             self.v.assetViewContainer.updateSquareCropButtonState()
             self.updateCropInfo()
@@ -301,7 +306,6 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
                 self.v.hideLoader()
                 self.delegate?.libraryViewFinishedLoading()
             }
-            self.v.assetViewContainer.updateCurtainView(ratio: self.v.assetZoomableView.fixedAspectRatio)
         }
         
         let updateCropInfo = {
