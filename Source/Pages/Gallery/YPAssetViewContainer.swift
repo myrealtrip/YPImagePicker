@@ -159,6 +159,12 @@ final class YPAssetViewContainer: UIView {
             squareCropButton.isHidden = true
             return
         }
+        
+        guard YPConfig.library.initialFixedAspectRatio == nil else {
+            // If initialFixedAspectRatio has value, squareCropButton should not visible
+            squareCropButton.isHidden = true
+            return
+        }
 
         let isImageASquare = selectedAssetImage.size.width == selectedAssetImage.size.height
         squareCropButton.isHidden = isImageASquare
