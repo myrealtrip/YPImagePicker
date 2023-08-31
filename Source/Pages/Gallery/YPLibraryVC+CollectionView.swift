@@ -10,7 +10,7 @@ import UIKit
 import Photos
 
 extension YPLibraryVC {
-    var isLimitExceeded: Bool { return selectedItems.count + YPConfig.library.preSelectedItemCount >= YPConfig.library.maxNumberOfItems }
+    var isLimitExceeded: Bool { return selectedItems.count + YPConfig.library.preSelectedItemCount > YPConfig.library.maxNumberOfItems }
     
     func setupCollectionView() {
         v.collectionView.dataSource = self
