@@ -52,11 +52,11 @@ final class YPAssetZoomableView: UIScrollView {
     
     public func fitImage_fixed(_ fit: Bool, animated isAnimated: Bool = false) {
         if fit {
-            let zoomScale = calculateSquaredZoomScale_fixed()
-            if self.zoomScale >= zoomScale { return }
+            squaredZoomScale = calculateSquaredZoomScale_fixed()
+            if self.zoomScale >= squaredZoomScale { return }
             
-            minimumZoomScale = zoomScale
-            setZoomScale(zoomScale, animated: isAnimated)
+            minimumZoomScale = squaredZoomScale
+            setZoomScale(squaredZoomScale, animated: isAnimated)
         } else {
             minimumZoomScale = 1
             setZoomScale(1, animated: isAnimated)
@@ -94,7 +94,7 @@ final class YPAssetZoomableView: UIScrollView {
             
             strongSelf.setAssetFrame(for: strongSelf.videoView, with: preview)
 
-            strongSelf.squaredZoomScale = strongSelf.calculateSquaredZoomScale()
+            strongSelf.squaredZoomScale = YPConfig.library.fixCropAreaUsingAspectRatio ? strongSelf.calculateSquaredZoomScale_fixed() : strongSelf.calculateSquaredZoomScale()
             
             completion()
             
@@ -153,7 +153,7 @@ final class YPAssetZoomableView: UIScrollView {
                 updateCropInfo()
             }
 
-            strongSelf.squaredZoomScale = strongSelf.calculateSquaredZoomScale()
+            strongSelf.squaredZoomScale = YPConfig.library.fixCropAreaUsingAspectRatio ? strongSelf.calculateSquaredZoomScale_fixed() : strongSelf.calculateSquaredZoomScale()
             
             completion(isLowResIntermediaryImage)
         }
@@ -199,9 +199,6 @@ final class YPAssetZoomableView: UIScrollView {
 fileprivate extension YPAssetZoomableView {
     
     func fitImageAtFixedRatio(`for` view: UIView, with image: UIImage) {
-        // Reseting the previous scale
-        self.minimumZoomScale = 1
-        self.zoomScale = 1
         self.contentInset = .zero
         
         let screenWidth = YPImagePickerConfiguration.screenWidth
@@ -212,8 +209,9 @@ fileprivate extension YPAssetZoomableView {
         if fixedAspectRatio < 1 {   // 가로
             let offset = (screenWidth * (1 - fixedAspectRatio)) / 2
             if w > h {
-                view.frame.size.width = screenWidth * fixedAspectRatio * (w / h)
-                view.frame.size.height = screenWidth * fixedAspectRatio
+                let ratio = fixedAspectRatio * self.zoomScale
+                view.frame.size.width = screenWidth * ratio * (w / h)
+                view.frame.size.height = screenWidth * ratio
             } else if h > w {
                 view.frame.size.width = screenWidth
                 view.frame.size.height = screenWidth * (h / w)
@@ -233,8 +231,9 @@ fileprivate extension YPAssetZoomableView {
                 self.contentInset.left = offset
                 self.contentInset.right = offset
             } else if h > w {
-                view.frame.size.width = screenWidth * (1 / fixedAspectRatio)
-                view.frame.size.height = screenWidth * (1 / fixedAspectRatio) * (h / w)
+                let ratio = (1 / fixedAspectRatio) * self.zoomScale
+                view.frame.size.width = screenWidth * ratio
+                view.frame.size.height = screenWidth * ratio * (h / w)
             } else {
                 view.frame.size.width = screenWidth
                 view.frame.size.height = screenWidth
@@ -253,7 +252,7 @@ fileprivate extension YPAssetZoomableView {
                 view.frame.size.height = screenWidth
             }
         }
-
+        
         view.center = center
         centerAssetView_fixed()
     }
