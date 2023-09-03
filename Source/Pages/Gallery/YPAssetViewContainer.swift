@@ -133,8 +133,8 @@ final class YPAssetViewContainer: UIView {
         squareCropButton.isSelected.toggle()
         if YPConfig.library.fixCropAreaUsingAspectRatio {
             let fit = squareCropButton.isSelected
-            updateCurtainView(ratio: fit ? 1 : zoomableView.fixedAspectRatio)
             zoomableView.fitImage_fixed(fit, animated: true)
+            updateCurtainView(ratio: fit ? 1 : zoomableView.fixedAspectRatio)
         } else {
             let z = zoomableView.zoomScale
             shouldCropToSquare = (z >= 1 && z < zoomableView.squaredZoomScale)

@@ -31,6 +31,7 @@ final class YPAssetZoomableView: UIScrollView {
     public var isMultipleSelectionEnabled = false
     
     fileprivate var currentAsset: PHAsset?
+    private var prevFixedAspectRatio: CGFloat = 1
     
     // Image view of the asset for convenience. Can be video preview image view or photo image view.
     public var assetImageView: UIImageView {
@@ -51,16 +52,19 @@ final class YPAssetZoomableView: UIScrollView {
     }
     
     public func fitImage_fixed(_ fit: Bool, animated isAnimated: Bool = false) {
+
+        guard let image = photoImageView.image else { return }
+        
         if fit {
-            squaredZoomScale = calculateSquaredZoomScale_fixed()
-            if self.zoomScale >= squaredZoomScale { return }
-            
-            minimumZoomScale = squaredZoomScale
-            setZoomScale(squaredZoomScale, animated: isAnimated)
+            fixedAspectRatio = 1
+            minimumZoomScale = calculateSquaredZoomScale_fixed()
         } else {
+            fixedAspectRatio = prevFixedAspectRatio
             minimumZoomScale = 1
-            setZoomScale(1, animated: isAnimated)
         }
+        
+        fitImageAtFixedRatio(for: photoImageView, with: image)
+        cropAreaDidChange()
     }
     
     /// Re-apply correct scrollview settings if image has already been adjusted in
@@ -207,38 +211,36 @@ fileprivate extension YPAssetZoomableView {
         let h = image.size.height
         
         if fixedAspectRatio < 1 {   // 가로
-            let offset = (screenWidth * (1 - fixedAspectRatio)) / 2
+            let inset = (screenWidth * (1 - fixedAspectRatio)) / 2
             if w > h {
-                let ratio = fixedAspectRatio * self.zoomScale
-                view.frame.size.width = screenWidth * ratio * (w / h)
-                view.frame.size.height = screenWidth * ratio
+                view.frame.size.width = screenWidth * fixedAspectRatio * (w / h)
+                view.frame.size.height = screenWidth * fixedAspectRatio
             } else if h > w {
                 view.frame.size.width = screenWidth
                 view.frame.size.height = screenWidth * (h / w)
-                self.contentInset.top = offset
-                self.contentInset.bottom = offset
+                self.contentInset.top = inset
+                self.contentInset.bottom = inset
             } else {
                 view.frame.size.width = screenWidth
                 view.frame.size.height = screenWidth
-                self.contentInset.top = offset
-                self.contentInset.bottom = offset
+                self.contentInset.top = inset
+                self.contentInset.bottom = inset
             }
         } else if fixedAspectRatio > 1 { // 세로
-            let offset = (screenWidth * (1 - 1 / fixedAspectRatio)) / 2
+            let inset = (screenWidth * (1 - 1 / fixedAspectRatio)) / 2
             if w > h {
                 view.frame.size.width = screenWidth * (w / h)
                 view.frame.size.height = screenWidth
-                self.contentInset.left = offset
-                self.contentInset.right = offset
+                self.contentInset.left = inset
+                self.contentInset.right = inset
             } else if h > w {
-                let ratio = (1 / fixedAspectRatio) * self.zoomScale
-                view.frame.size.width = screenWidth * ratio
-                view.frame.size.height = screenWidth * ratio * (h / w)
+                view.frame.size.width = screenWidth * (1 / fixedAspectRatio)
+                view.frame.size.height = screenWidth * (1 / fixedAspectRatio) * (h / w)
             } else {
                 view.frame.size.width = screenWidth
                 view.frame.size.height = screenWidth
-                self.contentInset.top = offset
-                self.contentInset.bottom = offset
+                self.contentInset.left = inset
+                self.contentInset.right = inset
             }
         } else {
             if w > h {
@@ -253,6 +255,7 @@ fileprivate extension YPAssetZoomableView {
             }
         }
         
+        self.contentSize = view.bounds.size
         view.center = center
         centerAssetView_fixed()
     }
@@ -336,22 +339,23 @@ fileprivate extension YPAssetZoomableView {
                 
         if w > h {
             fixedAspectRatio = landscapeAspectRatio
+            prevFixedAspectRatio = landscapeAspectRatio
             view.frame.size.width = screenWidth * fixedAspectRatio * (w / h)
             view.frame.size.height = screenWidth * fixedAspectRatio
         } else if h > w {
             fixedAspectRatio = portraitAspectRatio
+            prevFixedAspectRatio = portraitAspectRatio
             view.frame.size.width = screenWidth * (1 / fixedAspectRatio)
             view.frame.size.height = screenWidth * (1 / fixedAspectRatio) * (h / w)
         } else {
             fixedAspectRatio = 1
+            prevFixedAspectRatio = 1
             view.frame.size.width = screenWidth
             view.frame.size.height = screenWidth
         }
         
         view.center = center
         centerAssetView_fixed()
-        
-        minimumZoomScale = calculateSquaredZoomScale_fixed()
     }
     
     /// Calculate zoom scale which will fit the image to square

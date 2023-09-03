@@ -139,8 +139,20 @@ public final class YPLibraryView: UIView {
     }
 
     // MARK: Crop Rect
-
     func currentCropRect() -> CGRect {
+        if YPConfig.library.fixCropAreaUsingAspectRatio {
+            return currentCropRect_fixed()
+        }
+        
+        let cropView = assetZoomableView
+        let normalizedX = min(1, cropView.contentOffset.x &/ cropView.contentSize.width)
+        let normalizedY = min(1, cropView.contentOffset.y &/ cropView.contentSize.height)
+        let normalizedWidth = min(1, cropView.frame.width / cropView.contentSize.width)
+        let normalizedHeight = min(1, cropView.frame.height / cropView.contentSize.height)
+        return CGRect(x: normalizedX, y: normalizedY, width: normalizedWidth, height: normalizedHeight)
+    }
+    
+    func currentCropRect_fixed() -> CGRect {
         let cropView = assetZoomableView
         var offsetX = cropView.contentOffset.x
         var offsetY = cropView.contentOffset.y
@@ -150,11 +162,9 @@ public final class YPLibraryView: UIView {
         if YPConfig.library.fixCropAreaUsingAspectRatio {
             if assetZoomableView.fixedAspectRatio < 1 {
                 let margin = assetViewContainer.curtainView.topCurtainView.frame.height
-                offsetY += margin
                 frameHeight -= (margin * 2)
             } else if assetZoomableView.fixedAspectRatio > 1 {
                 let margin = assetViewContainer.curtainView.leadingCurtainView.frame.width
-                offsetX += margin
                 frameWidth -= (margin * 2)
             }
         }
