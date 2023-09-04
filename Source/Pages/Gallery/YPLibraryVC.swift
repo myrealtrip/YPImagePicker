@@ -15,11 +15,11 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
     public var v = YPLibraryView(frame: .zero)
     public var isProcessing = false // true if video or image is in processing state
     public let mediaManager = LibraryMediaManager()
-    public var didSelect: ((_ asset: PHAsset) -> Void)?
+    public var didSelect: ((_ asset: PHAsset, _ selectedItemCount: Int) -> Void)?
     public var didDeselect: ((_ asset: PHAsset) -> Void)?
-    public var changedSelectedItems: (() -> Void)?
-    public var selectedItems = [YPLibrarySelection]() {
-        didSet { changedSelectedItems?() }
+    public var changedSelectedItems: ((_ count: Int) -> Void)?
+    internal var selectedItems = [YPLibrarySelection]() {
+        didSet { changedSelectedItems?(selectedItems.count) }
     }
     public var fixedAspectRatio: CGFloat { v.assetViewContainer.zoomableView.fixedAspectRatio }
     

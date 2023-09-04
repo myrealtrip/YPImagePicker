@@ -123,7 +123,7 @@ extension YPLibraryVC {
 
         let newSelection = YPLibrarySelection(index: indexPath.row, assetIdentifier: asset.localIdentifier)
         selectedItems.append(newSelection)
-        didSelect?(asset)
+        didSelect?(asset, selectedItems.count)
         checkLimit()
     }
     
