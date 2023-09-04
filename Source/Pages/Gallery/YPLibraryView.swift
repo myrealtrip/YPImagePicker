@@ -162,9 +162,13 @@ public final class YPLibraryView: UIView {
         if YPConfig.library.fixCropAreaUsingAspectRatio {
             if assetZoomableView.fixedAspectRatio < 1 {
                 let margin = assetViewContainer.curtainView.topCurtainView.frame.height
+                let imageOriginY = assetZoomableView.photoImageView.frame.origin.y
+                offsetY += min(margin - imageOriginY, margin)
                 frameHeight -= (margin * 2)
             } else if assetZoomableView.fixedAspectRatio > 1 {
                 let margin = assetViewContainer.curtainView.leadingCurtainView.frame.width
+                let imageOriginX = assetZoomableView.photoImageView.frame.origin.x
+                offsetX += min(margin - imageOriginX, margin)
                 frameWidth -= (margin * 2)
             }
         }
