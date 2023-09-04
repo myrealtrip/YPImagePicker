@@ -14,15 +14,10 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
     public weak var delegate: YPLibraryViewDelegate?
     public var v = YPLibraryView(frame: .zero)
     public var isProcessing = false // true if video or image is in processing state
-    public let mediaManager = LibraryMediaManager()
-    public var didSelect: ((_ asset: PHAsset, _ selectedItemCount: Int) -> Void)?
-    public var didDeselect: ((_ asset: PHAsset) -> Void)?
-    public var changedSelectedItems: ((_ count: Int) -> Void)?
-    internal var selectedItems = [YPLibrarySelection]() {
-        didSet { changedSelectedItems?(selectedItems.count) }
-    }
     public var fixedAspectRatio: CGFloat { v.assetViewContainer.zoomableView.fixedAspectRatio }
     
+    internal let mediaManager = LibraryMediaManager()
+    internal var selectedItems = [YPLibrarySelection]()
     internal var isMultipleSelectionEnabled = false
     internal var currentlySelectedIndex: Int = 0
     internal let panGestureHelper = PanGestureHelper()
@@ -154,6 +149,14 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
         pausePlayer()
         NotificationCenter.default.removeObserver(self)
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
+    }
+    
+    public func getAsset(at index: Int) -> PHAsset? {
+        return mediaManager.getAsset(at: index)
+    }
+    
+    public func forseCancelExporting() {
+        mediaManager.forseCancelExporting()
     }
     
     // MARK: - Crop control

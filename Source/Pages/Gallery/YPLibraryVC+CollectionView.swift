@@ -63,26 +63,11 @@ extension YPLibraryVC {
     
     /// Removes cell from selection
     public func deselect(asset: PHAsset) {
-        if let positionIndex = selectedItems.firstIndex(where: {
+        guard let positionIndex = selectedItems.firstIndex(where: {
             $0.assetIdentifier == asset.localIdentifier
-        }) {
-            selectedItems.remove(at: positionIndex)
-            
-            // Refresh the numbers
-            let selectedIndexPaths = selectedItems.map { IndexPath(row: $0.index, section: 0) }
-            v.collectionView.reloadItems(at: selectedIndexPaths)
-            
-            // Replace the current selected image with the previously selected one
-            if let previouslySelectedIndexPath = selectedIndexPaths.last {
-                didDeselect?(asset)
-                v.collectionView.deselectItem(at: IndexPath(row: positionIndex, section: 0), animated: false)
-                v.collectionView.selectItem(at: previouslySelectedIndexPath, animated: false, scrollPosition: [])
-                currentlySelectedIndex = previouslySelectedIndexPath.row
-                changeAsset(mediaManager.getAsset(at: previouslySelectedIndexPath.row))
-            }
-            
-            checkLimit()
-        }
+        }) else { return }
+        
+        deselect(indexPath: IndexPath(row: positionIndex, section: 0))
     }
     
     func deselect(indexPath: IndexPath) {
@@ -97,9 +82,6 @@ extension YPLibraryVC {
 			
             // Replace the current selected image with the previously selected one
             if let previouslySelectedIndexPath = selectedIndexPaths.last {
-                if let asset = mediaManager.getAsset(at: indexPath.item) {
-                    didDeselect?(asset)
-                }
                 v.collectionView.deselectItem(at: indexPath, animated: false)
                 v.collectionView.selectItem(at: previouslySelectedIndexPath, animated: false, scrollPosition: [])
                 currentlySelectedIndex = previouslySelectedIndexPath.row
@@ -123,7 +105,6 @@ extension YPLibraryVC {
 
         let newSelection = YPLibrarySelection(index: indexPath.row, assetIdentifier: asset.localIdentifier)
         selectedItems.append(newSelection)
-        didSelect?(asset, selectedItems.count)
         checkLimit()
     }
     
