@@ -204,6 +204,7 @@ fileprivate extension YPAssetZoomableView {
     
     func fitImageAtFixedRatio(`for` view: UIView, with image: UIImage) {
         self.contentInset = .zero
+        self.zoomScale = 1
         
         let screenWidth = YPImagePickerConfiguration.screenWidth
         
