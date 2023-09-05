@@ -8,14 +8,14 @@
 
 import UIKit
 
-internal protocol YPPermissionCheckable {
+public protocol YPPermissionCheckable {
     func doAfterLibraryPermissionCheck(block: @escaping () -> Void)
     func doAfterCameraPermissionCheck(block: @escaping () -> Void)
     func checkLibraryPermission()
     func checkCameraPermission()
 }
 
-internal extension YPPermissionCheckable where Self: UIViewController {
+public extension YPPermissionCheckable where Self: UIViewController {
     func doAfterLibraryPermissionCheck(block: @escaping () -> Void) {
         YPPermissionManager.checkLibraryPermissionAndAskIfNeeded(sourceVC: self) { hasPermission in
             if hasPermission {

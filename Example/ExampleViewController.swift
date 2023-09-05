@@ -16,7 +16,7 @@ class ExampleViewController: UIViewController {
 
     lazy var selectedImageV : UIImageView = {
         let imageView = UIImageView(frame: CGRect(x: 0,
-                                                  y: 0,
+                                                  y: 50,
                                                   width: UIScreen.main.bounds.width,
                                                   height: UIScreen.main.bounds.height * 0.45))
         imageView.contentMode = .scaleAspectFit
@@ -69,6 +69,73 @@ class ExampleViewController: UIViewController {
     }
 
     // MARK: - Configuration
+    @objc
+    func showPicker() {
+
+        var config = YPImagePickerConfiguration()
+
+        config.showsPhotoFilters = false
+        config.shouldSaveNewPicturesToAlbum = true
+        config.screens = [.library]
+        config.hidesStatusBar = false
+        config.hidesBottomBar = false
+        config.maxCameraZoomFactor = 2.0
+        
+        config.library.itemOverlayType = .grid
+        config.library.maxNumberOfItems = 10
+        config.library.preselectedItems = selectedItems
+        config.library.landscapeAspectRatio = (3/4)
+        config.library.portraitAspectRatio = (5/4)
+        config.library.fixCropAreaUsingAspectRatio = true
+        
+
+        config.gallery.hidesRemoveButton = false
+        
+        config.wordings.libraryTitle = "최근 항목"
+        config.wordings.albumsTitle = "앨범 선택"
+        
+        config.colors.defaultNavigationBarColor = .black
+        config.colors.defaultNavigationBarTitleColor = .white
+        config.colors.libraryScreenBackgroundColor = .black
+        config.colors.assetViewBackgroundColor = .black
+        config.colors.safeAreaBackgroundColor = .black
+        config.colors.seperatorViewColor = .black
+        config.colors.multipleItemsSelectedCircleColor = UIColor(r: 16, g: 20, b: 24)   // .gray1000
+        config.colors.multipleItemsSelectedCircleBorderColor = UIColor(r: 222, g: 226, b: 230) // .gray200
+        config.colors.albumBackgroundColor = UIColor(r: 16, g: 20, b: 24)   // .gray1000
+        config.colors.albumBarTintColor = UIColor(r: 16, g: 20, b: 24)   // .gray1000
+        config.colors.albumTitleColor = .white
+        config.colors.albumTintColor = .white
+        config.colors.albumCellThumbnailBackgroundColor = UIColor(r: 52, g: 58, b: 64) // .gray800
+        config.colors.albumCellTitleColor = .white
+        
+        config.colors.buttonBackgroundColorForNormal = UIColor(r: 73, g: 80, b: 85) // .gray700
+        config.colors.buttonBackgroundColorForSelected = .white
+        config.colors.buttonImageColorForNormal = .white
+        config.colors.buttonImageColorForSelected = UIColor(r: 16, g: 20, b: 24)    // .gray1000
+        
+        config.fonts.pickerTitleFont = .systemFont(ofSize: 17, weight: .semibold)   // .headlineNormal17
+        config.fonts.multipleSelectionIndicatorFont = .boldSystemFont(ofSize: 13)   // .captionBold13
+        config.fonts.navigationBarTitleFont = .boldSystemFont(ofSize: 17)   // .headlineNormal17
+        config.fonts.albumCellTitleFont = .boldSystemFont(ofSize: 16)   // .headlineNormal16
+        config.fonts.albumCellNumberOfItemsFont = .boldSystemFont(ofSize: 13)   // .captionNormal13
+        config.fonts.buttonTitleFont = .boldSystemFont(ofSize: 14)  // .paragraphBold14
+        
+        
+        let picker = YPImagePicker(configuration: config)
+        picker.imagePickerDelegate = self
+        picker.didFinishPicking { [weak picker] items, _ in
+            self.selectedItems = items
+            self.selectedImageV.image = items.singlePhoto?.image
+            picker?.dismiss(animated: true, completion: nil)
+        }
+
+        present(picker, animated: true, completion: nil)
+    }
+
+    
+    
+    /*
     @objc
     func showPicker() {
 
@@ -260,6 +327,7 @@ class ExampleViewController: UIViewController {
 
         present(picker, animated: true, completion: nil)
     }
+     */
 }
 
 // Support methods

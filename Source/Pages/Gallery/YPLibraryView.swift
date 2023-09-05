@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-internal final class YPLibraryView: UIView {
+public final class YPLibraryView: UIView {
 
     // MARK: - Public vars
 
@@ -52,7 +52,7 @@ internal final class YPLibraryView: UIView {
 
     private let line: UIView = {
         let v = UIView()
-        v.backgroundColor = .ypSystemBackground
+        v.backgroundColor = YPConfig.colors.seperatorViewColor
         return v
     }()
     /// When video is processing this bar appears
@@ -96,6 +96,9 @@ internal final class YPLibraryView: UIView {
     }
 
     // MARK: - Public Methods
+    public func deallocateVideoView() {
+        assetZoomableView.videoView.deallocate()
+    }
 
     // MARK: Overlay view
 
@@ -105,7 +108,7 @@ internal final class YPLibraryView: UIView {
 
     // MARK: Loader and progress
 
-    func fadeInLoader() {
+    public func fadeInLoader() {
         shouldShowLoader = true
         // Only show loader if full res image takes more than 0.5s to load.
         if #available(iOS 10.0, *) {
@@ -124,7 +127,7 @@ internal final class YPLibraryView: UIView {
         }
     }
 
-    func hideLoader() {
+    public func hideLoader() {
         shouldShowLoader = false
         assetViewContainer.spinnerView.alpha = 0
     }
@@ -136,13 +139,44 @@ internal final class YPLibraryView: UIView {
     }
 
     // MARK: Crop Rect
-
     func currentCropRect() -> CGRect {
+        if YPConfig.library.fixCropAreaUsingAspectRatio {
+            return currentCropRect_fixed()
+        }
+        
         let cropView = assetZoomableView
         let normalizedX = min(1, cropView.contentOffset.x &/ cropView.contentSize.width)
         let normalizedY = min(1, cropView.contentOffset.y &/ cropView.contentSize.height)
         let normalizedWidth = min(1, cropView.frame.width / cropView.contentSize.width)
         let normalizedHeight = min(1, cropView.frame.height / cropView.contentSize.height)
+        return CGRect(x: normalizedX, y: normalizedY, width: normalizedWidth, height: normalizedHeight)
+    }
+    
+    func currentCropRect_fixed() -> CGRect {
+        let cropView = assetZoomableView
+        var offsetX = cropView.contentOffset.x
+        var offsetY = cropView.contentOffset.y
+        var frameWidth = cropView.frame.width
+        var frameHeight = cropView.frame.height
+        
+        if YPConfig.library.fixCropAreaUsingAspectRatio {
+            if assetZoomableView.fixedAspectRatio < 1 {
+                let margin = assetViewContainer.curtainView.topCurtainView.frame.height
+                let imageOriginY = assetZoomableView.photoImageView.frame.origin.y
+                offsetY += min(margin - imageOriginY, margin)
+                frameHeight -= (margin * 2)
+            } else if assetZoomableView.fixedAspectRatio > 1 {
+                let margin = assetViewContainer.curtainView.leadingCurtainView.frame.width
+                let imageOriginX = assetZoomableView.photoImageView.frame.origin.x
+                offsetX += min(margin - imageOriginX, margin)
+                frameWidth -= (margin * 2)
+            }
+        }
+        
+        let normalizedX = min(1, offsetX &/ cropView.contentSize.width)
+        let normalizedY = min(1, offsetY &/ cropView.contentSize.height)
+        let normalizedWidth = min(1, frameWidth / cropView.contentSize.width)
+        let normalizedHeight = min(1, frameHeight / cropView.contentSize.height)
         return CGRect(x: normalizedX, y: normalizedY, width: normalizedWidth, height: normalizedHeight)
     }
 

@@ -10,33 +10,36 @@ import UIKit
 import Photos
 import PhotosUI
 
-internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
-    internal weak var delegate: YPLibraryViewDelegate?
-    internal var v = YPLibraryView(frame: .zero)
-    internal var isProcessing = false // true if video or image is in processing state
-    internal var selectedItems = [YPLibrarySelection]()
+public class YPLibraryVC: UIViewController, YPPermissionCheckable {
+    public weak var delegate: YPLibraryViewDelegate?
+    public var v = YPLibraryView(frame: .zero)
+    public var isProcessing = false // true if video or image is in processing state
+    public var fixedAspectRatio: CGFloat { v.assetViewContainer.zoomableView.fixedAspectRatio }
+    
     internal let mediaManager = LibraryMediaManager()
+    internal var selectedItems = [YPLibrarySelection]()
     internal var isMultipleSelectionEnabled = false
     internal var currentlySelectedIndex: Int = 0
     internal let panGestureHelper = PanGestureHelper()
     internal var isInitialized = false
+    
 
     // MARK: - Init
 
-    internal override func loadView() {
+    public override func loadView() {
         view = v
     }
 
-    required init() {
+    public required init() {
         super.init(nibName: nil, bundle: nil)
         title = YPConfig.wordings.libraryTitle
     }
 
-    internal required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func initialize() {
+    public func initialize() {
         guard isInitialized == false else {
             return
         }
@@ -88,7 +91,7 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
         }
     }
 
-    func setAlbum(_ album: YPAlbum) {
+    public func setAlbum(_ album: YPAlbum) {
         title = album.title
         mediaManager.collection = album.collection
         currentlySelectedIndex = 0
@@ -148,6 +151,14 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
     }
     
+    public func getAsset(at index: Int) -> PHAsset? {
+        return mediaManager.getAsset(at: index)
+    }
+    
+    public func forseCancelExporting() {
+        mediaManager.forseCancelExporting()
+    }
+    
     // MARK: - Crop control
     
     @objc
@@ -204,6 +215,7 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
         } else {
             selectedItems.removeAll()
             addToSelection(indexPath: IndexPath(row: currentlySelectedIndex, section: 0))
+            changeAsset(mediaManager.getAsset(at: currentlySelectedIndex), forceChange: true)
         }
         
         v.assetViewContainer.setMultipleSelectionMode(on: isMultipleSelectionEnabled)
@@ -279,7 +291,7 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
         }
     }
     
-    func changeAsset(_ asset: PHAsset?) {
+    func changeAsset(_ asset: PHAsset?, forceChange: Bool = false) {
         guard let asset = asset else {
             print("No asset to change.")
             return
@@ -288,6 +300,11 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
         delegate?.libraryViewStartedLoadingImage()
         
         let completion = { (isLowResIntermediaryImage: Bool) in
+            if YPConfig.library.fixCropAreaUsingAspectRatio {
+                self.v.assetViewContainer.squareCropButton.isSelected = false
+                self.v.assetViewContainer.updateCurtainView(ratio: self.v.assetZoomableView.fixedAspectRatio)
+            }
+            
             self.v.hideOverlayView()
             self.v.assetViewContainer.updateSquareCropButtonState()
             self.updateCropInfo()
@@ -309,7 +326,8 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
                                                   mediaManager: self.mediaManager,
                                                   storedCropPosition: self.fetchStoredCrop(),
                                                   completion: completion,
-                                                  updateCropInfo: updateCropInfo)
+                                                  updateCropInfo: updateCropInfo,
+                                                  forceChange: forceChange)
             case .video:
                 self.v.assetZoomableView.setVideo(asset,
                                                   mediaManager: self.mediaManager,
@@ -387,7 +405,7 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
     
     private func fetchImageAndCrop(for asset: PHAsset,
                                    withCropRect: CGRect? = nil,
-                                   callback: @escaping (_ photo: UIImage, _ exif: [String: Any]) -> Void) {
+                                   callback: @escaping (_ photo: UIImage, _ exif: [String: Any], _ data: Data) -> Void) {
         delegate?.libraryViewDidTapNext()
         let cropRect = withCropRect ?? DispatchQueue.main.sync { v.currentCropRect() }
         let ts = targetSize(for: asset, cropRect: cropRect)
@@ -471,9 +489,11 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
                     
                     switch asset.asset.mediaType {
                     case .image:
-                        self.fetchImageAndCrop(for: asset.asset, withCropRect: asset.cropRect) { image, exifMeta in
+                        self.fetchImageAndCrop(for: asset.asset, withCropRect: asset.cropRect) { image, exifMeta, data in
                             let photo = YPMediaPhoto(image: image.resizedImageIfNeeded(),
-													 exifMeta: exifMeta, asset: asset.asset)
+													 exifMeta: exifMeta,
+                                                     asset: asset.asset,
+                                                     data: data)
                             resultMediaItems.append(YPMediaItem.photo(p: photo))
                             asyncGroup.leave()
                         }
@@ -546,12 +566,13 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
                         }
                     })
                 case .image:
-                    self.fetchImageAndCrop(for: asset) { image, exifMeta in
+                    self.fetchImageAndCrop(for: asset) { image, exifMeta, data in
                         DispatchQueue.main.async {
                             self.delegate?.libraryViewFinishedLoading()
                             let photo = YPMediaPhoto(image: image.resizedImageIfNeeded(),
                                                      exifMeta: exifMeta,
-                                                     asset: asset)
+                                                     asset: asset,
+                                                     data: data)
                             photoCallback(photo)
                         }
                     }
@@ -576,7 +597,7 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
     
     // MARK: - Player
     
-    func pausePlayer() {
+    public func pausePlayer() {
         v.assetZoomableView.videoView.pause()
     }
     

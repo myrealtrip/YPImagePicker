@@ -58,7 +58,7 @@ open class YPImagePicker: UINavigationController {
     // This nifty little trick enables us to call the single version of the callbacks.
     // This keeps the backwards compatibility keeps the api as simple as possible.
     // Multiple selection becomes available as an opt-in.
-    private func didSelect(items: [YPMediaItem]) {
+    private func didFinishSelect(items: [YPMediaItem]) {
         _didFinishPicking?(items, false)
     }
     
@@ -73,7 +73,9 @@ open class YPImagePicker: UINavigationController {
         viewControllers = [picker]
         setupLoadingView()
         navigationBar.isTranslucent = false
-        navigationBar.tintColor = .ypLabel
+        navigationBar.tintColor = YPConfig.colors.defaultNavigationBarTitleColor
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: YPConfig.colors.defaultNavigationBarTitleColor]
+        navigationBar.backgroundColor = YPConfig.colors.defaultNavigationBarColor
         view.backgroundColor = .ypSystemBackground
 
         picker.didSelectItems = { [weak self] items in
@@ -87,11 +89,11 @@ open class YPImagePicker: UINavigationController {
             // Multiple items flow
             if items.count > 1 {
                 if YPConfig.library.skipSelectionsGallery {
-                    self?.didSelect(items: items)
+                    self?.didFinishSelect(items: items)
                     return
                 } else {
                     let selectionsGalleryVC = YPSelectionsGalleryVC(items: items) { _, items in
-                        self?.didSelect(items: items)
+                        self?.didFinishSelect(items: items)
                     }
                     self?.pushViewController(selectionsGalleryVC, animated: true)
                     return
@@ -111,7 +113,7 @@ open class YPImagePicker: UINavigationController {
                             YPPhotoSaver.trySaveImage(photo.image, inAlbumNamed: YPConfig.albumName)
                         }
                     }
-                    self?.didSelect(items: [mediaItem])
+                    self?.didFinishSelect(items: [mediaItem])
                 }
                 
                 func showCropVC(photo: YPMediaPhoto, completion: @escaping (_ aphoto: YPMediaPhoto) -> Void) {
@@ -146,11 +148,11 @@ open class YPImagePicker: UINavigationController {
                     let videoFiltersVC = YPVideoFiltersVC.initWith(video: video,
                                                                    isFromSelectionVC: false)
                     videoFiltersVC.didSave = { [weak self] outputMedia in
-                        self?.didSelect(items: [outputMedia])
+                        self?.didFinishSelect(items: [outputMedia])
                     }
                     self?.pushViewController(videoFiltersVC, animated: true)
                 } else {
-                    self?.didSelect(items: [YPMediaItem.video(v: video)])
+                    self?.didFinishSelect(items: [YPMediaItem.video(v: video)])
                 }
             }
         }

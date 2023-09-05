@@ -9,20 +9,20 @@
 import UIKit
 import Photos
 
-class YPAlbumVC: UIViewController {
+public class YPAlbumVC: UIViewController {
     
-    override var prefersStatusBarHidden: Bool {
+    public override var prefersStatusBarHidden: Bool {
          return YPConfig.hidesStatusBar
     }
     
-    var didSelectAlbum: ((YPAlbum) -> Void)?
+    public var didSelectAlbum: ((YPAlbum) -> Void)?
     var albums = [YPAlbum]()
     let albumsManager: YPAlbumsManager
     
     let v = YPAlbumView()
-    override func loadView() { view = v }
+    public override func loadView() { view = v }
     
-    required init(albumsManager: YPAlbumsManager) {
+    public required init(albumsManager: YPAlbumsManager) {
         self.albumsManager = albumsManager
         super.init(nibName: nil, bundle: nil)
         title = YPConfig.wordings.albumsTitle
@@ -32,15 +32,15 @@ class YPAlbumVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: YPConfig.wordings.cancel,
-                                                           style: .plain,
-                                                           target: self,
-                                                           action: #selector(close))
-        navigationItem.leftBarButtonItem?.setFont(font: YPConfig.fonts.leftBarButtonFont, forState: .normal)
         navigationController?.navigationBar.titleTextAttributes = [.font: YPConfig.fonts.navigationBarTitleFont,
                                                                    .foregroundColor: YPConfig.colors.albumTitleColor]
+        let image = imageFromBundle("ico_close").withTintColor(.white)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: image,
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(close))
         navigationController?.navigationBar.barTintColor = YPConfig.colors.albumBarTintColor
         navigationController?.navigationBar.tintColor = YPConfig.colors.albumTintColor
         setUpTableView()
@@ -69,7 +69,7 @@ class YPAlbumVC: UIViewController {
         v.tableView.dataSource = self
         v.tableView.delegate = self
         v.tableView.rowHeight = UITableView.automaticDimension
-        v.tableView.estimatedRowHeight = 80
+        v.tableView.estimatedRowHeight = 84
         v.tableView.separatorStyle = .none
         v.tableView.register(YPAlbumCell.self, forCellReuseIdentifier: "AlbumCell")
     }
@@ -77,11 +77,11 @@ class YPAlbumVC: UIViewController {
 
 extension YPAlbumVC: UITableViewDataSource {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return albums.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let album = albums[indexPath.row]
         if let cell = tableView.dequeueReusableCell(withIdentifier: "AlbumCell", for: indexPath) as? YPAlbumCell {
             cell.thumbnail.backgroundColor = .ypSystemGray

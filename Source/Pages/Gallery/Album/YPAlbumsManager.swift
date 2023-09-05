@@ -10,9 +10,11 @@ import Foundation
 import Photos
 import UIKit
 
-class YPAlbumsManager {
+public class YPAlbumsManager {
     
     private var cachedAlbums: [YPAlbum]?
+    
+    public init() {}
     
     func fetchAlbums() -> [YPAlbum] {
         if let cachedAlbums = cachedAlbums {

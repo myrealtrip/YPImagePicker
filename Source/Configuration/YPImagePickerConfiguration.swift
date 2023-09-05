@@ -227,6 +227,25 @@ public struct YPConfigLibrary {
     
     /// Set the overlay type shown on top of the selected library item
     public var itemOverlayType: YPItemOverlayType = .grid
+    
+    /// Custom for Myrealtrip
+    /// initial Ratio for landscape
+    public var landscapeAspectRatio: CGFloat?
+    
+    /// initial Ratio for portrait
+    public var portraitAspectRatio: CGFloat?
+    
+    /// show curtainView. curtainView will fit for zoomableView's aspectRatio
+    public var fixCropAreaUsingAspectRatio: Bool = false
+    
+    /// It will works when fixCropAreaUsingAspectRatio is true. If it has a value, croparea will fixed by this.
+    public var initialFixedAspectRatio: CGFloat?
+
+    /// Set true, if you would like to use your warning view
+    public var useCustomMaxNumberWaningView: Bool = false
+    
+    /// Used this value in check limit
+    public var preSelectedItemCount: Int = 0
 }
 
 /// Encapsulates video specific settings.

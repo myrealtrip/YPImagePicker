@@ -7,9 +7,16 @@
 //
 
 import UIKit
+import Photos
 
 extension YPLibraryVC {
-    var isLimitExceeded: Bool { return selectedItems.count >= YPConfig.library.maxNumberOfItems }
+    var isLimitExceeded: Bool {
+        if YPConfig.library.fixCropAreaUsingAspectRatio {
+            return selectedItems.count + YPConfig.library.preSelectedItemCount > YPConfig.library.maxNumberOfItems
+        }
+        
+        return selectedItems.count + YPConfig.library.preSelectedItemCount >= YPConfig.library.maxNumberOfItems
+    }
     
     func setupCollectionView() {
         v.collectionView.dataSource = self
@@ -55,6 +62,14 @@ extension YPLibraryVC {
     // MARK: - Library collection view cell managing
     
     /// Removes cell from selection
+    public func deselect(asset: PHAsset) {
+        guard let positionIndex = selectedItems.firstIndex(where: {
+            $0.assetIdentifier == asset.localIdentifier
+        }) else { return }
+        
+        deselect(indexPath: IndexPath(row: positionIndex, section: 0))
+    }
+    
     func deselect(indexPath: IndexPath) {
         if let positionIndex = selectedItems.firstIndex(where: {
             $0.assetIdentifier == mediaManager.getAsset(at: indexPath.row)?.localIdentifier
@@ -101,6 +116,7 @@ extension YPLibraryVC {
     
     /// Checks if there can be selected more items. If no - present warning.
     func checkLimit() {
+        guard YPConfig.library.useCustomMaxNumberWaningView == false else { return }
         v.maxNumberWarningView.isHidden = !isLimitExceeded || isMultipleSelectionEnabled == false
     }
 }
@@ -140,7 +156,7 @@ extension YPLibraryVC: UICollectionViewDelegate {
         cell.durationLabel.isHidden = !isVideo
         cell.durationLabel.text = isVideo ? YPHelper.formattedStrigFrom(asset.duration) : ""
         cell.multipleSelectionIndicator.isHidden = !isMultipleSelectionEnabled
-        cell.isSelected = currentlySelectedIndex == indexPath.row
+        cell.showSelectedOverlay = currentlySelectedIndex == indexPath.row
         
         // Set correct selection number
         if let index = selectedItems.firstIndex(where: { $0.assetIdentifier == asset.localIdentifier }) {
@@ -198,7 +214,7 @@ extension YPLibraryVC: UICollectionViewDelegate {
             // which triggered photoLibraryDidChange() and reloadItems() which breaks selection.
             //
             if let previousCell = collectionView.cellForItem(at: previouslySelectedIndexPath) as? YPLibraryViewCell {
-                previousCell.isSelected = false
+                previousCell.showSelectedOverlay = false
             }
         }
     }

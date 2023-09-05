@@ -15,18 +15,45 @@ final class YPAssetViewContainer: UIView {
     public var zoomableView: YPAssetZoomableView
     public var itemOverlay: UIView?
     public let curtain = UIView()
+    public let curtainView = YPCurtainView()
     public let spinnerView = UIView()
-    public let squareCropButton = UIButton()
+    public let squareCropButton: UIButton = {
+        let v = UIButton()
+        v.layer.cornerRadius = 18
+        v.clipsToBounds = true
+        
+        let image = imageFromBundle("ico_expand_content")
+        v.setImage(image.withTintColor(YPConfig.colors.buttonImageColorForNormal), for: .normal)
+        v.setImage(image.withTintColor(YPConfig.colors.buttonImageColorForSelected), for: .selected)
+        v.setBackgroundColor(YPConfig.colors.buttonBackgroundColorForNormal, forState: .normal)
+        v.setBackgroundColor(YPConfig.colors.buttonBackgroundColorForSelected, forState: .selected)
+        return v
+    }()
     public let multipleSelectionButton: UIButton = {
         let v = UIButton()
-        v.setImage(YPConfig.icons.multipleSelectionOffIcon, for: .normal)
+        v.layer.cornerRadius = 18
+        v.clipsToBounds = true
+        v.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10+6+4)
+        v.titleEdgeInsets = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: -6-4)
+        
+        let image = imageFromBundle("ico_select_library")
+        v.setImage(image.withTintColor(YPConfig.colors.buttonImageColorForNormal), for: .normal)
+        v.setImage(image.withTintColor(YPConfig.colors.buttonImageColorForSelected), for: .selected)
+        v.setTitle("여러장 선택", for: .normal)
+        v.setTitle("여러장 선택", for: .selected)
+        v.setTitleColor(YPConfig.colors.buttonImageColorForNormal, for: .normal)
+        v.setTitleColor(YPConfig.colors.buttonImageColorForSelected, for: .selected)
+        v.titleLabel?.font = YPConfig.fonts.buttonTitleFont
+        
+        v.setBackgroundColor(YPConfig.colors.buttonBackgroundColorForNormal, forState: .normal)
+        v.setBackgroundColor(YPConfig.colors.buttonBackgroundColorForSelected, forState: .selected)
         return v
     }()
     public var onlySquare = YPConfig.library.onlySquare
     public var isShown = true
     public var spinnerIsShown = false
     
-    private let spinner = UIActivityIndicatorView(style: .white)
+    private let spinner = UIActivityIndicatorView(style: .medium)
     private var shouldCropToSquare = YPConfig.library.isSquareByDefault
     private var isMultipleSelectionEnabled = false
 
@@ -65,31 +92,33 @@ final class YPAssetViewContainer: UIView {
             spinnerView.subviews(
                 spinner
             ),
-            curtain
+            curtain,
+            curtainView
         )
 
         spinner.centerInContainer()
         spinnerView.fillContainer()
         curtain.fillContainer()
+        curtainView.fillContainer()
 
         spinner.startAnimating()
         spinnerView.backgroundColor = UIColor.ypLabel.withAlphaComponent(0.3)
         curtain.backgroundColor = UIColor.ypLabel.withAlphaComponent(0.7)
         curtain.alpha = 0
+        curtainView.isHidden = !YPConfig.library.fixCropAreaUsingAspectRatio
 
         if !onlySquare {
             // Crop Button
-            squareCropButton.setImage(YPConfig.icons.cropIcon, for: .normal)
             subviews(squareCropButton)
-            squareCropButton.size(42)
-            |-15-squareCropButton
-            squareCropButton.Bottom == self.Bottom - 15
+            squareCropButton.size(36)
+            |-12-squareCropButton
+            squareCropButton.Bottom == self.Bottom - 12
         }
 
         // Multiple selection button
         subviews(multipleSelectionButton)
-        multipleSelectionButton.size(42).trailing(15)
-        multipleSelectionButton.Bottom == self.Bottom - 15
+        multipleSelectionButton.height(36).trailing(12)
+        multipleSelectionButton.Bottom == self.Bottom - 12
     }
 
     required init?(coder: NSCoder) {
@@ -101,9 +130,16 @@ final class YPAssetViewContainer: UIView {
     // MARK: - Square button
 
     @objc public func squareCropButtonTapped() {
-        let z = zoomableView.zoomScale
-        shouldCropToSquare = (z >= 1 && z < zoomableView.squaredZoomScale)
-        zoomableView.fitImage(shouldCropToSquare, animated: true)
+        squareCropButton.isSelected.toggle()
+        if YPConfig.library.fixCropAreaUsingAspectRatio {
+            let fit = squareCropButton.isSelected
+            zoomableView.fitImage_fixed(fit, animated: true)
+            updateCurtainView(ratio: fit ? 1 : zoomableView.fixedAspectRatio)
+        } else {
+            let z = zoomableView.zoomScale
+            shouldCropToSquare = (z >= 1 && z < zoomableView.squaredZoomScale)
+            zoomableView.fitImage(shouldCropToSquare, animated: true)
+        }
     }
 
     /// Update only UI of square crop button.
@@ -123,6 +159,12 @@ final class YPAssetViewContainer: UIView {
             squareCropButton.isHidden = true
             return
         }
+        
+        guard YPConfig.library.initialFixedAspectRatio == nil else {
+            // If initialFixedAspectRatio has value, squareCropButton should not visible
+            squareCropButton.isHidden = true
+            return
+        }
 
         let isImageASquare = selectedAssetImage.size.width == selectedAssetImage.size.height
         squareCropButton.isHidden = isImageASquare
@@ -133,9 +175,14 @@ final class YPAssetViewContainer: UIView {
     /// Use this to update the multiple selection mode UI state for the YPAssetViewContainer
     public func setMultipleSelectionMode(on: Bool) {
         isMultipleSelectionEnabled = on
-        let image = on ? YPConfig.icons.multipleSelectionOnIcon : YPConfig.icons.multipleSelectionOffIcon
-        multipleSelectionButton.setImage(image, for: .normal)
+        multipleSelectionButton.isSelected = on
         updateSquareCropButtonState()
+        zoomableView.isMultipleSelectionEnabled = isMultipleSelectionEnabled
+    }
+    
+    public func updateCurtainView(ratio: CGFloat?) {
+        guard isMultipleSelectionEnabled == false else { return }
+        curtainView.updateCropAreaSize(ratio: ratio)
     }
 }
 
