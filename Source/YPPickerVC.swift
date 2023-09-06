@@ -383,6 +383,8 @@ extension YPPickerVC: YPLibraryViewDelegate {
     public func libraryViewShouldAddToSelection(indexPath: IndexPath, numSelections: Int) -> Bool {
         return pickerVCDelegate?.shouldAddToSelection(indexPath: indexPath, numSelections: numSelections) ?? true
     }
+    
+    public func libraryViewHaveNoSelectableItems() {}
 }
 
 private extension UIView {

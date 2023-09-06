@@ -92,10 +92,43 @@ extension YPLibraryVC {
         }
     }
     
+    func checkNextItem() {
+        guard currentlySelectedIndex < (mediaManager.fetchResult?.count ?? 0) else {
+            delegate?.libraryViewHaveNoSelectableItems()
+            return
+        }
+        
+        let indexPath = IndexPath(row: currentlySelectedIndex, section: 0)
+        if !(delegate?.libraryViewShouldAddToSelection(indexPath: indexPath,
+                                                       numSelections: selectedItems.count) ?? true) {
+            currentlySelectedIndex += 1
+            checkNextItem()
+            return
+        }
+        
+        if let asset = mediaManager.getAsset(at: currentlySelectedIndex) {
+            let nextIndexPath = IndexPath(row: currentlySelectedIndex, section: 0)
+            
+            changeAsset(asset)
+            
+            
+            addToSelection(indexPath: nextIndexPath)
+            v.collectionView.performBatchUpdates {
+                
+            } completion: { [weak self] _ in
+                self?.v.collectionView.selectItem(at: nextIndexPath, animated: true, scrollPosition: .top)
+            }
+        }
+    }
+    
     /// Adds cell to selection
     func addToSelection(indexPath: IndexPath) {
         if !(delegate?.libraryViewShouldAddToSelection(indexPath: indexPath,
                                                        numSelections: selectedItems.count) ?? true) {
+            if YPConfig.library.fixCropAreaUsingAspectRatio, isMultipleSelectionEnabled == false {
+                currentlySelectedIndex += 1
+                checkNextItem()
+            }
             return
         }
         guard let asset = mediaManager.getAsset(at: indexPath.item) else {
@@ -181,6 +214,14 @@ extension YPLibraryVC: UICollectionViewDelegate {
     }
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if YPConfig.library.fixCropAreaUsingAspectRatio,
+           !(delegate?.libraryViewShouldAddToSelection(indexPath: indexPath,
+                                                       numSelections: selectedItems.count) ?? true) {
+            v.collectionView.deselectItem(at: indexPath, animated: false)
+            v.collectionView.selectItem(at: IndexPath(row: currentlySelectedIndex, section: 0), animated: false, scrollPosition: [])
+            return
+        }
+        
         let previouslySelectedIndexPath = IndexPath(row: currentlySelectedIndex, section: 0)
         currentlySelectedIndex = indexPath.row
 
