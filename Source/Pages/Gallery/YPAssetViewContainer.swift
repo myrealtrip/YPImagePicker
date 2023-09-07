@@ -25,6 +25,7 @@ final class YPAssetViewContainer: UIView {
         let image = imageFromBundle("ico_expand_content")
         v.setImage(image.withTintColor(YPConfig.colors.buttonImageColorForNormal), for: .normal)
         v.setImage(image.withTintColor(YPConfig.colors.buttonImageColorForSelected), for: .selected)
+        v.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         v.setBackgroundColor(YPConfig.colors.buttonBackgroundColorForNormal, forState: .normal)
         v.setBackgroundColor(YPConfig.colors.buttonBackgroundColorForSelected, forState: .selected)
         return v
@@ -33,12 +34,12 @@ final class YPAssetViewContainer: UIView {
         let v = UIButton()
         v.layer.cornerRadius = 18
         v.clipsToBounds = true
-        v.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10+6+4)
-        v.titleEdgeInsets = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: -6-4)
+        v.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 20)
+        v.titleEdgeInsets = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: -6)
         
-        let image = imageFromBundle("ico_select_library")
-        v.setImage(image.withTintColor(YPConfig.colors.buttonImageColorForNormal), for: .normal)
-        v.setImage(image.withTintColor(YPConfig.colors.buttonImageColorForSelected), for: .selected)
+        let image = imageFromBundle("ico_select_library").resized(to: CGSize(width: 18, height: 18))
+        v.setImage(image?.withTintColor(YPConfig.colors.buttonImageColorForNormal), for: .normal)
+        v.setImage(image?.withTintColor(YPConfig.colors.buttonImageColorForSelected), for: .selected)
         v.setTitle("여러장 선택", for: .normal)
         v.setTitle("여러장 선택", for: .selected)
         v.setTitleColor(YPConfig.colors.buttonImageColorForNormal, for: .normal)
