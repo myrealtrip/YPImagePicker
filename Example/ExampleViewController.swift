@@ -347,6 +347,6 @@ extension ExampleViewController: YPImagePickerDelegate {
     }
 
     func shouldAddToSelection(indexPath: IndexPath, numSelections: Int) -> Bool {
-        return indexPath.row == 50
+        return true
     }
 }
