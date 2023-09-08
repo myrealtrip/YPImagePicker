@@ -22,10 +22,9 @@ final class YPAssetViewContainer: UIView {
         v.layer.cornerRadius = 18
         v.clipsToBounds = true
         
-        let image = imageFromBundle("ico_expand_content")
-        v.setImage(image.withTintColor(YPConfig.colors.buttonImageColorForNormal), for: .normal)
-        v.setImage(image.withTintColor(YPConfig.colors.buttonImageColorForSelected), for: .selected)
-        v.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
+        let image = imageFromBundle("ico_expand_content").resized(to: CGSize(width: 20, height: 20))
+        v.setImage(image?.withTintColor(YPConfig.colors.buttonImageColorForNormal), for: .normal)
+        v.setImage(image?.withTintColor(YPConfig.colors.buttonImageColorForSelected), for: .selected)
         v.setBackgroundColor(YPConfig.colors.buttonBackgroundColorForNormal, forState: .normal)
         v.setBackgroundColor(YPConfig.colors.buttonBackgroundColorForSelected, forState: .selected)
         return v
