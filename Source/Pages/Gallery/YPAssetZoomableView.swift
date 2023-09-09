@@ -202,65 +202,6 @@ final class YPAssetZoomableView: UIScrollView {
 
 fileprivate extension YPAssetZoomableView {
     
-    func fitImageAtFixedRatio(`for` view: UIView, with image: UIImage) {
-        self.contentInset = .zero
-        self.zoomScale = 1
-        
-        let screenWidth = YPImagePickerConfiguration.screenWidth
-        
-        let w = image.size.width
-        let h = image.size.height
-        
-        if fixedAspectRatio < 1 {   // 가로
-            let inset = (screenWidth * (1 - fixedAspectRatio)) / 2
-            if w > h {
-                view.frame.size.width = screenWidth * fixedAspectRatio * (w / h)
-                view.frame.size.height = screenWidth * fixedAspectRatio
-            } else if h > w {
-                view.frame.size.width = screenWidth
-                view.frame.size.height = screenWidth * (h / w)
-                self.contentInset.top = inset
-                self.contentInset.bottom = inset
-            } else {
-                view.frame.size.width = screenWidth
-                view.frame.size.height = screenWidth
-                self.contentInset.top = inset
-                self.contentInset.bottom = inset
-            }
-        } else if fixedAspectRatio > 1 { // 세로
-            let inset = (screenWidth * (1 - 1 / fixedAspectRatio)) / 2
-            if w > h {
-                view.frame.size.width = screenWidth * (w / h)
-                view.frame.size.height = screenWidth
-                self.contentInset.left = inset
-                self.contentInset.right = inset
-            } else if h > w {
-                view.frame.size.width = screenWidth * (1 / fixedAspectRatio)
-                view.frame.size.height = screenWidth * (1 / fixedAspectRatio) * (h / w)
-            } else {
-                view.frame.size.width = screenWidth
-                view.frame.size.height = screenWidth
-                self.contentInset.left = inset
-                self.contentInset.right = inset
-            }
-        } else {
-            if w > h {
-                view.frame.size.width = screenWidth * (w / h)
-                view.frame.size.height = screenWidth
-            } else if h > w {
-                view.frame.size.width = screenWidth
-                view.frame.size.height = screenWidth * (h / w)
-            } else {
-                view.frame.size.width = screenWidth
-                view.frame.size.height = screenWidth
-            }
-        }
-        
-        self.contentSize = view.bounds.size
-        view.center = center
-        centerAssetView_fixed()
-    }
-    
     func setAssetFrame(`for` view: UIView, with image: UIImage) {
 
         if YPConfig.library.fixCropAreaUsingAspectRatio {
@@ -326,34 +267,115 @@ fileprivate extension YPAssetZoomableView {
     
     func setAssetFrame_fixed(`for` view: UIView, with image: UIImage) {
         guard let landscapeAspectRatio, let portraitAspectRatio else { return }
-        
-        // Reseting the previous scale
-        self.minimumZoomScale = 1
-        self.zoomScale = 1
-        self.contentInset = .zero
-        
-        // Calculating and setting the image view frame depending on screenWidth
-        let screenWidth = YPImagePickerConfiguration.screenWidth
-        
+
         let w = image.size.width
         let h = image.size.height
                 
         if w > h {
             fixedAspectRatio = landscapeAspectRatio
             prevFixedAspectRatio = landscapeAspectRatio
-            view.frame.size.width = screenWidth * fixedAspectRatio * (w / h)
-            view.frame.size.height = screenWidth * fixedAspectRatio
         } else if h > w {
             fixedAspectRatio = portraitAspectRatio
             prevFixedAspectRatio = portraitAspectRatio
-            view.frame.size.width = screenWidth * (1 / fixedAspectRatio)
-            view.frame.size.height = screenWidth * (1 / fixedAspectRatio) * (h / w)
         } else {
             fixedAspectRatio = 1
             prevFixedAspectRatio = 1
-            view.frame.size.width = screenWidth
-            view.frame.size.height = screenWidth
         }
+        
+        fitImageAtFixedRatio(for: view, with: image)
+
+    }
+    
+    func fitImageAtFixedRatio(`for` view: UIView, with image: UIImage) {
+        self.contentInset = .zero
+        self.zoomScale = 1
+        self.minimumZoomScale = 1
+        
+        let screenWidth = YPImagePickerConfiguration.screenWidth
+        
+        let w = image.size.width
+        let h = image.size.height
+        
+        if fixedAspectRatio < 1 {   // Landscape
+            let inset = (screenWidth * (1 - fixedAspectRatio)) / 2
+            if w > h {
+                view.frame.size.width = screenWidth * fixedAspectRatio * (w / h)
+                view.frame.size.height = screenWidth * fixedAspectRatio
+                
+                if view.frame.size.width < screenWidth {
+                    resizeToFitAtScreenWidth(for: view, with: image)
+                    return
+                }
+            } else if h > w {
+                view.frame.size.width = screenWidth
+                view.frame.size.height = screenWidth * (h / w)
+                self.contentInset.top = inset
+                self.contentInset.bottom = inset
+            } else {
+                view.frame.size.width = screenWidth
+                view.frame.size.height = screenWidth
+                self.contentInset.top = inset
+                self.contentInset.bottom = inset
+            }
+        } else if fixedAspectRatio > 1 { // Portrait
+            let inset = (screenWidth * (1 - 1 / fixedAspectRatio)) / 2
+            if w > h {
+                view.frame.size.width = screenWidth * (w / h)
+                view.frame.size.height = screenWidth
+                self.contentInset.left = inset
+                self.contentInset.right = inset
+            } else if h > w {
+                view.frame.size.width = screenWidth * (1 / fixedAspectRatio)
+                view.frame.size.height = screenWidth * (1 / fixedAspectRatio) * (h / w)
+                
+                if view.frame.size.height < screenWidth {
+                    resizeToFitAtScreenWidth(for: view, with: image)
+                    return
+                }
+            } else {
+                view.frame.size.width = screenWidth
+                view.frame.size.height = screenWidth
+                self.contentInset.left = inset
+                self.contentInset.right = inset
+            }
+        } else {
+            if w > h {
+                view.frame.size.width = screenWidth * (w / h)
+                view.frame.size.height = screenWidth
+            } else if h > w {
+                view.frame.size.width = screenWidth
+                view.frame.size.height = screenWidth * (h / w)
+            } else {
+                view.frame.size.width = screenWidth
+                view.frame.size.height = screenWidth
+            }
+        }
+        
+        self.contentSize = view.bounds.size
+        view.center = center
+        centerAssetView_fixed()
+    }
+    
+    func resizeToFitAtScreenWidth(`for` view: UIView, with image: UIImage) {
+        let screenWidth = YPImagePickerConfiguration.screenWidth
+        
+        let w = image.size.width
+        let h = image.size.height
+                
+        if fixedAspectRatio < 1 {
+            view.frame.size.width = screenWidth
+            view.frame.size.height = screenWidth * (h / w)
+            let inset = (view.frame.size.height - screenWidth * fixedAspectRatio) / 2
+            self.contentInset.top = inset
+            self.contentInset.bottom = inset
+        } else if fixedAspectRatio > 1 {
+            view.frame.size.width = screenWidth * (w / h)
+            view.frame.size.height = screenWidth
+            let inset = (view.frame.size.width - screenWidth * (1 / fixedAspectRatio)) / 2
+            self.contentInset.left = inset
+            self.contentInset.right = inset
+        }
+        self.contentSize = CGSize(width: screenWidth, height: screenWidth)
         
         view.center = center
         centerAssetView_fixed()
@@ -426,6 +448,14 @@ fileprivate extension YPAssetZoomableView {
         self.contentOffset.x = (assetSize.width > scrollViewBoundsSize.width) ? (assetSize.width - scrollViewBoundsSize.width) / 2.0 : 0
         self.contentOffset.y = (assetSize.height > scrollViewBoundsSize.height) ? (assetSize.height - scrollViewBoundsSize.height) / 2.0 : 0
     }
+    
+    func updateContentInset() {
+        if fixedAspectRatio < 1 { // // Landscape
+            // left, right
+        } else if fixedAspectRatio > 1 { // Portrait
+            // top, bottom
+        }
+    }
 }
 
 // MARK: UIScrollViewDelegate Protocol
@@ -446,6 +476,10 @@ extension YPAssetZoomableView: UIScrollViewDelegate {
         // prevent to zoom out
         if YPConfig.library.onlySquare && scale < squaredZoomScale {
             self.fitImage(true, animated: true)
+        }
+        
+        if YPConfig.library.fixCropAreaUsingAspectRatio {
+            updateContentInset()
         }
         
         zoomableViewDelegate?.ypAssetZoomableViewScrollViewDidEndZooming()
