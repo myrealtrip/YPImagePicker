@@ -153,30 +153,36 @@ public final class YPLibraryView: UIView {
     }
     
     func currentCropRect_fixed() -> CGRect {
+        let screenWidth = YPImagePickerConfiguration.screenWidth
+        let aspectRatio = assetZoomableView.fixedAspectRatio
         let cropView = assetZoomableView
+        let imageView = assetZoomableView.photoImageView
+        
         var offsetX = cropView.contentOffset.x
         var offsetY = cropView.contentOffset.y
-        var frameWidth = cropView.frame.width
-        var frameHeight = cropView.frame.height
+        var frameWidth = screenWidth
+        var frameHeight = screenWidth
         
         if YPConfig.library.fixCropAreaUsingAspectRatio {
-            if assetZoomableView.fixedAspectRatio < 1 {
+            if aspectRatio < 1 {
                 let margin = assetViewContainer.curtainView.topCurtainView.frame.height
                 let imageOriginY = assetZoomableView.photoImageView.frame.origin.y
-                offsetY += min(margin - imageOriginY, margin)
-                frameHeight -= (margin * 2)
-            } else if assetZoomableView.fixedAspectRatio > 1 {
+                let extraMargin = min(margin - imageOriginY, margin)
+                offsetY += extraMargin
+                frameHeight *= aspectRatio
+            } else if aspectRatio > 1 {
                 let margin = assetViewContainer.curtainView.leadingCurtainView.frame.width
                 let imageOriginX = assetZoomableView.photoImageView.frame.origin.x
-                offsetX += min(margin - imageOriginX, margin)
-                frameWidth -= (margin * 2)
+                let extraMargin = min(margin - imageOriginX, margin)
+                offsetX += extraMargin
+                frameWidth *= (1 / aspectRatio)
             }
         }
         
-        let normalizedX = min(1, offsetX &/ cropView.contentSize.width)
-        let normalizedY = min(1, offsetY &/ cropView.contentSize.height)
-        let normalizedWidth = min(1, frameWidth / cropView.contentSize.width)
-        let normalizedHeight = min(1, frameHeight / cropView.contentSize.height)
+        let normalizedX = min(1, offsetX &/ imageView.frame.size.width)
+        let normalizedY = min(1, offsetY &/ imageView.frame.size.height)
+        let normalizedWidth = min(1, frameWidth / imageView.frame.size.width)
+        let normalizedHeight = min(1, frameHeight / imageView.frame.size.height)
         return CGRect(x: normalizedX, y: normalizedY, width: normalizedWidth, height: normalizedHeight)
     }
 
