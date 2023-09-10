@@ -450,10 +450,19 @@ fileprivate extension YPAssetZoomableView {
     }
     
     func updateContentInset() {
+        let screenWidth = YPImagePickerConfiguration.screenWidth
         if fixedAspectRatio < 1 { // // Landscape
-            // left, right
+            let margin = (screenWidth * (1 - fixedAspectRatio)) / 2
+            let imageOriginY = photoImageView.frame.origin.y
+            let extraMargin = min(margin - imageOriginY, margin)
+            self.contentInset.top = extraMargin
+            self.contentInset.bottom = extraMargin
         } else if fixedAspectRatio > 1 { // Portrait
-            // top, bottom
+            let margin = (screenWidth * (1 - 1 / fixedAspectRatio)) / 2
+            let imageOriginX = photoImageView.frame.origin.x
+            let extraMargin = min(margin - imageOriginX, margin)
+            self.contentInset.left = extraMargin
+            self.contentInset.right = extraMargin
         }
     }
 }
