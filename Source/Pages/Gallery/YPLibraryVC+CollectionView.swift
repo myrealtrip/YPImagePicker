@@ -123,14 +123,19 @@ extension YPLibraryVC {
     
     /// Adds cell to selection
     func addToSelection(indexPath: IndexPath) {
-        if !(delegate?.libraryViewShouldAddToSelection(indexPath: indexPath,
-                                                       numSelections: selectedItems.count) ?? true) {
+        guard !(delegate?.libraryViewIsLimitExceed(numSelections: selectedItems.count) ?? false) else {
+            return
+        }
+        
+        guard (delegate?.libraryViewShouldAddToSelection(indexPath: indexPath,
+                                                         numSelections: selectedItems.count) ?? true) else {
             if YPConfig.library.fixCropAreaUsingAspectRatio, isMultipleSelectionEnabled == false {
                 currentlySelectedIndex += 1
                 checkNextItem()
             }
             return
         }
+        
         guard let asset = mediaManager.getAsset(at: indexPath.item) else {
             print("No asset to add to selection.")
             return

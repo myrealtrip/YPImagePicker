@@ -338,7 +338,6 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
 }
 
 extension YPPickerVC: YPLibraryViewDelegate {
-    
     public func libraryViewDidTapNext() {
         libraryVC?.isProcessing = true
         DispatchQueue.main.async {
@@ -385,6 +384,10 @@ extension YPPickerVC: YPLibraryViewDelegate {
     }
     
     public func libraryViewHaveNoSelectableItems() {}
+    
+    public func libraryViewIsLimitExceed(numSelections: Int) -> Bool {
+        return false
+    }
 }
 
 private extension UIView {

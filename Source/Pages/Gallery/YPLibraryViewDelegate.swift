@@ -15,6 +15,7 @@ public protocol YPLibraryViewDelegate: AnyObject {
     func libraryViewFinishedLoading()
     func libraryViewDidToggleMultipleSelection(enabled: Bool)
     func libraryViewShouldAddToSelection(indexPath: IndexPath, numSelections: Int) -> Bool
+    func libraryViewIsLimitExceed(numSelections: Int) -> Bool
     func libraryViewHaveNoItems()
     func libraryViewHaveNoSelectableItems()
 }
