@@ -13,7 +13,6 @@ import Photos
 public protocol YPImagePickerDelegate: AnyObject {
     func imagePickerHasNoItemsInLibrary(_ picker: YPImagePicker)
     func shouldAddToSelection(indexPath: IndexPath, numSelections: Int) -> Bool
-    func isLimitExceed(numSelections: Int) -> Bool
 }
 
 open class YPImagePicker: UINavigationController {
@@ -180,9 +179,5 @@ extension YPImagePicker: YPPickerVCDelegate {
     func shouldAddToSelection(indexPath: IndexPath, numSelections: Int) -> Bool {
         return self.imagePickerDelegate?.shouldAddToSelection(indexPath: indexPath, numSelections: numSelections)
             ?? true
-    }
-    
-    func isLimitExceed(numSelections: Int) -> Bool {
-        return self.imagePickerDelegate?.isLimitExceed(numSelections: numSelections) ?? false
     }
 }
