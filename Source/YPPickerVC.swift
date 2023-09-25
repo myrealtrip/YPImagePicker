@@ -12,6 +12,7 @@ import Photos
 protocol YPPickerVCDelegate: AnyObject {
     func libraryHasNoItems()
     func shouldAddToSelection(indexPath: IndexPath, numSelections: Int) -> Bool
+    func isLimitExceed(numSelections: Int) -> Bool
 }
 
 open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
@@ -382,6 +383,10 @@ extension YPPickerVC: YPLibraryViewDelegate {
     
     public func libraryViewShouldAddToSelection(indexPath: IndexPath, numSelections: Int) -> Bool {
         return pickerVCDelegate?.shouldAddToSelection(indexPath: indexPath, numSelections: numSelections) ?? true
+    }
+    
+    public func libraryViewIsLimitExceed(numSelections: Int) -> Bool {
+        return pickerVCDelegate?.isLimitExceed(numSelections: numSelections) ?? false
     }
     
     public func libraryViewHaveNoSelectableItems() {}

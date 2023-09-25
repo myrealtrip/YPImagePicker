@@ -349,4 +349,8 @@ extension ExampleViewController: YPImagePickerDelegate {
     func shouldAddToSelection(indexPath: IndexPath, numSelections: Int) -> Bool {
         return true
     }
+    
+    func isLimitExceed(numSelections: Int) -> Bool {
+        return numSelections >= 2
+    }
 }
