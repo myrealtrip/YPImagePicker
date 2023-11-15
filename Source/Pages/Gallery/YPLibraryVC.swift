@@ -15,6 +15,7 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
     public var v = YPLibraryView(frame: .zero)
     public var isProcessing = false // true if video or image is in processing state
     public var fixedAspectRatio: CGFloat { v.assetViewContainer.zoomableView.fixedAspectRatio }
+    public var hasSelectedItems: Bool { selectedItems.count > 0 }
     
     internal let mediaManager = LibraryMediaManager()
     internal var selectedItems = [YPLibrarySelection]()
